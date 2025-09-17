@@ -1,0 +1,590 @@
+\documentclass[UTF-8,twoside,cs4size]{ctexart}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{geometry}
+\usepackage{setspace}
+\usepackage{xeCJK}
+\usepackage{ulem}
+\usepackage{pstricks}
+\usepackage{pstricks-add}
+\usepackage{bm}
+\usepackage{mathtools}
+\usepackage{breqn}
+\usepackage{mathrsfs}
+\usepackage{esint}
+\usepackage{textcomp}
+\usepackage{upgreek}
+\usepackage{pifont}
+\usepackage{tikz}
+\usepackage{circuitikz}
+\usepackage{caption}
+\usepackage{tabularx}
+\usepackage{array}
+\newcolumntype{Y}{>{\centering\arraybackslash}X}
+\usepackage{pgfplots}
+\usepackage{multirow}
+\usepackage{pgfplotstable}
+\usepackage{mhchem}
+\usepackage{physics} % Add this package for \dt and \dif commands
+\newcommand{\dif}{\mathrm{d}}
+\usepackage{cases}
+\usepackage{subfigure}
+\usepackage{enumerate}
+\usepackage{minipage-marginpar}
+\usepackage{diagbox}
+\usepackage{graphicx}
+
+
+\graphicspath{{./figure/}}
+
+\setCJKfamilyfont{zhsong}[AutoFakeBold = {5.6}]{STSong}
+\newcommand*{\song}{\CJKfamily{zhsong}}
+
+\geometry{a4paper,left=2cm,right=2cm,top=0.75cm,bottom=2.54cm}
+
+\newcommand{\experiName}{气轨上弹簧振子的简谐振动及瞬时速度的测定}%实验名称
+\newcommand{\supervisor}{纪爱玲}%指导教师
+\newcommand{\name}{孙奕飞}
+\newcommand{\studentNum}{2023k8009925001}
+\newcommand{\class}{2}%班级
+\newcommand{\group}{06}%组
+\newcommand{\seat}{01}%座位号
+\newcommand{\dateYear}{2024}
+\newcommand{\dateMonth}{12}%月
+\newcommand{\dateDay}{24}%日
+\newcommand{\room}{教716}%地点
+\newcommand{\others}{$\square$}
+
+\ctexset{
+    section={
+        format+=\raggedright\song\large
+    },
+    subsection={
+        name={\quad,.}
+    },
+    subsubsection={
+        name={\qquad,.}
+    }
+}
+
+\begin{document}
+\noindent
+
+\begin{center}
+
+    \textbf{\song \zihao{-2} \ziju{0.5}《基础物理实验》实验报告}
+    
+\end{center}
+
+
+\begin{center}
+    \kaishu \zihao{5}
+    \noindent \emph{实验名称}\underline{\makebox[28em][c]{\experiName}}
+    \emph{指导教师}\underline{\makebox[9em][c]{\supervisor}}\\
+    \emph{姓名}\underline{\makebox[6em][c]{\name}} 
+    \emph{学号}\underline{\makebox[14em][c]{\studentNum}}
+    \emph{分班分组及座号} \underline{\makebox[5em][c]{\class \ -\ \group \ -\ \seat }\emph{号}} \\
+    \emph{实验日期} \underline{\makebox[3em][c]{\dateYear}} \emph{年}
+    \underline{\makebox[2em][c]{\dateMonth}}\emph{月}
+    \underline{\makebox[2em][c]{\dateDay}}\emph{日}
+    \emph{实验地点}\underline{{\makebox[4em][c]\room}}
+    \emph{调课/补课} \underline{\makebox[3em][c]{否}}
+    \emph{成绩评定} \underline{\hspace{8em}}
+    {\noindent}
+    \rule[5pt]{17.7cm}{0.2em}
+\end{center}
+
+\section{实验目的及要求}
+\begin{enumerate}
+    \item 观察简谐振动现象并测量其周期。
+    \item 测定弹簧的倔强系数 $k$ 和有效质量 $m_0$。
+    \item 研究简谐振动的运动学特征。
+    \item 验证机械能守恒定律。
+    \item 使用极限法测量瞬时速度。
+    \item 探讨并深入理解平均速度与瞬时速度之间的关系。
+\end{enumerate}
+
+\section{实验仪器}
+气垫导轨、滑块、附加砝码、弹簧、U 型挡光片、平板挡光片、数字毫秒计、天平等。
+
+\section{实验原理}
+\subsection{弹簧振子的简谐振动}
+如图所示，在水平气垫导轨上，两个相同的弹簧中间连接一个滑块，滑块进行往返振动。由于气垫导轨能够有效地减少摩擦力，滑块可以近似看作在无阻力条件下做简谐振动。
+
+\begin{figure}[!h]
+    \centering
+    \begin{circuitikz}
+        \draw (-1,-0.5) rectangle (1,0.5);
+        \node at(0,0) {滑块};
+        \draw (1,0) to[R] (3,0);
+        \draw (-1,0) to[R] (-3,0);
+        \node[above] at(0,0.5) {$ m_1 $};
+        \draw (1,0.6)--(1,1.2);
+        \draw (1.8,0.6)--(1.8,1.2);
+        \draw [<->] (1.05,0.8)--(1.75,0.8);
+        \node[above] at(1.4,0.8) {$ x_0 $};
+        \draw (-1,0.6)--(-1,1.2);
+        \draw (-1.8,0.6)--(-1.8,1.2);
+        \draw [<->] (-1.05,0.8)--(-1.75,0.8);
+        \node[above] at(-1.4,0.8) {$ x_0 $};
+        \node[below] at(-2,0) {$ k_1 $};
+        \node[below] at(2,0) {$ k_1 $};
+        \draw (0,-1)--(3,-1)--(3,0.6)--(3.3,0.6)--(3.3,-2)--(-3.3,-2)--(-3.3,0.6)--(-3,0.6)--(-3,-1)--(0,-1);
+        \node at(0,-1.5) {气垫导轨};
+    \end{circuitikz}
+    \caption{简谐运动原理图}
+\end{figure}
+
+设滑块（以及其上附着的重物）的总质量为 $m_1$，平衡位置时，每个弹簧的伸长量为 $x_0$。当滑块偏离平衡位置 $x$ 时，滑块仅受到两个弹簧在水平方向上的弹性回复力。设每根弹簧的倔强系数为 $k_1$，则根据牛顿第二定律，滑块的运动方程为：
+\[
+-kx = ma,
+\]
+其中 $k = 2k_1$，$m = m_0 + m_1$，$m$ 为振动系统的有效质量，$m_0$ 为弹簧的有效质量，$a$ 为滑块的加速度。
+
+该运动方程的通解为：
+\begin{equation}\label{3-1-1}
+x = A\sin(\omega_0 t + \varphi_0),
+\end{equation}
+其中，$A$ 为振幅，$\varphi_0$ 为初相位，$\omega_0 = \sqrt{\frac{k}{m}}$ 为振动系统的固有角频率，这一频率由振动系统的自身性质决定。
+
+振动周期 $T$ 可由以下公式计算：
+\[
+T = \frac{2\pi}{\omega_0} = 2\pi \sqrt{\frac{m}{k}} = 2\pi \sqrt{\frac{m_0 + m_1}{k}},
+\]
+将以上公式两边平方即可得：
+\begin{equation}\label{3-1-2}
+T^2 = 4\pi^2 \frac{m_0 + m_1}{k}.
+\end{equation}
+
+\subsection{简谐振动的运动学特征描述}
+对式 (\ref{3-1-1}) 关于时间 $t$ 求导，得到速度表达式：
+\begin{equation}\label{3-2-1}
+    v = \frac{\dif x}{\dif t} = A\omega_0\cos(\omega_0 t + \varphi_0).
+\end{equation}
+
+由上式可知，速度 $v$ 随时间变化呈简谐振动，其角频率为 $\omega_0$，振幅为 $A\omega_0$，并且速度的相位比位移 $x$ 超前 $\frac{\pi}{2}$。
+
+结合式 (\ref{3-1-1}) 和 (3)，消去时间 $t$ 可得：
+\[
+v^2 = \omega_0^2 (A^2 - x^2).
+\]
+
+\subsection{简谐振动的机械能}
+在本次实验中，系统在任意时刻的振动动能为：
+\[
+E_k = \frac{1}{2}m v^2 = \frac{1}{2}(m_0 + m_1)v^2,
+\]
+其中 $v$ 为滑块的速度。
+
+系统的弹性势能为：
+\[
+E_p = \frac{1}{2}k x^2.
+\]
+
+因此，系统的机械能可表示为：
+\begin{equation}\label{3-3-3}
+    E = E_k + E_p = \frac{1}{2}m\omega^2 A^2 = \frac{1}{2}k A^2,
+\end{equation}
+其中 $k$ 和 $A$ 均为系统的常量，不随时间发生变化。
+
+通过测量滑块在不同位置 $x$ 的速度 $v$，可以分别计算系统的弹性势能和振动动能，以此验证二者的相互转换关系，并进一步证明机械能守恒定律。
+
+\subsection{瞬时速度的测量}
+
+设变速运动的物体在 $\Delta t$ 时间内经过路程为 $\Delta s$，则其平均速度表达式为：
+\[
+\overline{v} = \frac{\Delta s}{\Delta t}.
+\]
+
+当 $\Delta t$ 和 $\Delta s$ 同时趋于0时，平均速度的极限即为物体的瞬时速度。
+
+在实验中，在倾斜的气轨上，于 $A$ 点放置一个光电门，并在滑块上依次安装不同挡光距离的 $U$ 形挡光片。每次实验时，滑块从 $P$ 点由静止开始下滑，挡光片的第一挡光边距 $A$ 点的距离为 $l$。通过测量对应的挡光时间 $\Delta t$ 及挡光距离 $\Delta s$ 数据，可以得出以下关系式（假设滑块从静止下滑距离 $l$ 处的瞬时速度为 $v_0$，即第一挡光时的瞬时速度）：
+\begin{equation}
+    \overline{v} = \frac{\Delta s}{\Delta t} = v_0 + \frac{1}{2}a \cdot \Delta t,
+\end{equation}
+其中，$a$ 表示滑块在 $A$ 点附近的加速度。
+
+通过实验改变挡光距离 $\Delta s$，可以分析平均速度与瞬时速度之间的关系。进一步，分别绘制 $v-t$ 图和 $v-x$ 图，并利用外推法求出滑块的瞬时速度。
+
+\section{实验内容}
+\begin{enumerate}
+    \item 学会使用光电门进行测速和测周期的方法。
+    
+    \item 调节气垫导轨至水平状态，通过测量任意两点的速度变化，验证气垫导轨是否处于水平状态。
+
+    \item 测量弹簧振子的振动周期，并考察振动周期与振幅之间的关系。在滑块振幅 $A$ 分别为 10.0 cm、20.0 cm、30.0 cm 和 40.0 cm 时，测量相应的振动周期。分析实验数据并讨论实验结果，从而得出相关结论。
+
+    \item 研究振动周期与振子质量之间的关系。在滑块上逐步增加骑码（铁片），测量不同质量下的振动周期。对取定振幅（例如 $A = 40.0 \, \mathrm{cm}$），每增加一个骑码，测量一组 $T$ 数据（注意，骑码数量不宜过多，以阻尼不明显为限）。绘制 $T^2-m$ 图，若满足 $T$ 与 $m$ 的理论关系式，则 $T^2-m$ 图为一条直线，斜率为 $4\pi^2 / k$，截距为 $4\pi^2 m_0 / k$。使用最小二乘法对数据直线拟合，求出弹簧倔强系数 $k$ 和有效质量 $m_0$。
+
+    \item 研究速度和位移的关系。在滑块上安装 U 型挡光片，用光电门测量滑块的速度。绘制 $v^2-x^2$ 图，观察该图是否为一条直线，并进行直线拟合，验证斜率是否为 $-\omega_0^2$，截距是否为 $A^2 \omega_0^2$，其中 $\omega_0 = \frac{2\pi}{T}$，$T$ 可通过测量确定。
+
+    \item 研究振动系统的机械能是否守恒。在固定振幅（例如取 $A = 40.0 \, \mathrm{cm}$）的情况下，测量滑块在不同位置 $x$ 处的速度，计算该位置的动能和势能，并对各位置的机械能进行比较，从而得出机械能守恒性的结论。
+
+    \item 研究平均速度与瞬时速度的关系，并利用外推法求出瞬时速度。在气垫导轨的仅一个螺丝端，小心将导轨抬起，并在该螺丝下方垫入垫块。测量不同 $\Delta s$ 的挡光片在距离 $A$ 点 $50 \, \mathrm{cm}$ 处从静止开始自由下滑时的挡光时间 $\Delta t$，计算平均速度 $\overline{v} = \Delta s / \Delta t$，绘制 $\overline{v}-\Delta t$ 图和 $\overline{v}-\Delta s$ 图。通过对线性图外推，求出瞬时速度 $v_0$。
+
+    \item 改变气垫导轨的倾斜角度 $\theta$（增加垫块数量），重复上述实验步骤，研究倾斜角度对实验的影响。
+
+    \item 改变 $A$ 点到 $P$ 点的距离 $l$（例如设置为 $60 \, \mathrm{cm}$），重复上述实验，考察起点距离对测量的影响。
+\end{enumerate}
+
+\section{实验结果与数据处理}
+\subsection{试验仪器的调试}
+通过粗调使滑块在气垫导轨上基本保持静止或在较小范围内做往复运动。随后安装两个光电门，并在滑块上固定用于测量速度的 U 型挡光片，记录滑块分别通过两个光电门时的速度值。通过不断调节高度，直至滑块经过两光电门时的速度差异较小。最终测得的数据如下：
+
+\begin{table}[!h]
+	\centering
+	\renewcommand\arraystretch{1.5}
+	\begin{tabularx}{\textwidth}{|Y|Y|Y|}
+		\hline
+		$v_1$\;(cm/s) & $v_2$\;(cm/s) & 误差\;\% \\
+		\hline
+		80.06 & 79.94 & 0.15 \\
+		\hline
+		84.51 & 84.24 & 0.32 \\
+		\hline
+		51.43 & 51.41 & 0.04 \\
+		\hline
+	\end{tabularx}
+	\caption{调平气垫导轨数据记录}
+\end{table}
+
+从表中可以看到，每行计算的误差均在 0.5\% 以内，因此可以认为导轨已经调平。
+
+\subsection{测量弹簧振子的振动周期并考察振动周期和振幅的关系}
+当滑块的振幅 $A$ 分别为 10.0,\;20.0,\;30.0,\;40.0\,cm 时，测量相应振动周期。每组数据测量五个周期并取平均值，实验结果如下：
+
+\begin{table}[!h]
+	\centering
+	\renewcommand\arraystretch{1.5}
+	\begin{tabularx}{\textwidth}{|c|Y|Y|Y|Y|}
+		\hline
+		$A$\;(cm) & 10 & 20 & 30 & 40 \\
+		\hline
+		$T_1$\;(ms) & 1578.32 & 1578.87 & 1579.21 & 1579.06 \\
+		\hline
+		$T_2$\;(ms) & 1578.27 & 1578.44 & 1579.43 & 1578.89 \\
+		\hline
+		$T_3$\;(ms) & 1578.61 & 1578.45 & 1579.06 & 1579.03 \\
+		\hline
+		$T_4$\;(ms) & 1577.96 & 1578.58 & 1579.14 & 1578.87 \\
+		\hline
+		$T_5$\;(ms) & 1578.37 & 1578.56 & 1579.07 & 1579.00 \\
+		\hline
+		$T$\;(ms)  & 1578.31 & 1578.56 & 1579.18 & 1578.97 \\
+		\hline
+	\end{tabularx}
+	\caption{不同振幅下弹簧振子的振动周期}
+\end{table}
+
+在误差允许的范围内，可以认为最终测得的四组周期数据基本一致，这表明振动周期与振幅并无关系。这一结果也可以通过实验原理加以解释：振动周期 $T$ 仅与振动系统的内在属性（如系统的有效质量与弹簧的倔强系数）相关，而不受振幅等因素的影响。
+
+\subsection{研究振动周期与振子质量之间的关系}
+滑块的振幅A取40.0\,cm，逐步增加骑码，测量不同质量下的振动周期。每增加一个骑码，测量一组$T$数据，实验结果如下：
+\begin{table}[!h]
+    \centering		
+    \renewcommand\arraystretch{1.5}
+    \begin{tabularx}{\textwidth}{|c|Y|Y|Y|Y|Y|}
+        \hline
+        $ m $\;(g)& 217.35 & 242.47 & 254.89 & 279.72 & 292.09 \\
+        \hline
+        $ T_1 $\;(ms)& 1579.43 & 1666.44 & 1707.46 & 1787.56 & 1826.10 \\
+        \hline
+        $ T_2 $\;(ms)& 1579.10 & 1666.38 & 1707.68 & 1787.56 & 1825.83 \\
+        \hline
+        $ T_3 $\;(ms)& 1579.58 & 1666.21 & 1707.58 & 1787.47 & 1825.67 \\
+        \hline
+        $ T_4 $\;(ms)& 1579.58 & 1666.29 & 1707.36 & 1787.63 & 1825.91 \\
+        \hline
+        $ T_5 $\;(ms)& 1579.01 & 1666.33 & 1707.47 & 1787.67 & 1826.18 \\
+        \hline
+        $ T_6 $\;(ms)& 1578.89 & 1666.29 & 1707.46 & 1787.55 & 1825.99 \\
+        \hline
+        $ T_7 $\;(ms)& 1579.26 & 1666.23 & 1707.38 & 1787.36 & 1826.00 \\
+        \hline
+        $ T_8 $\;(ms)& 1578.93 & 1666.26 & 1707.71 & 1787.57 & 1825.91 \\
+        \hline
+        $ T_9 $\;(ms)& 1579.53 & 1666.41 & 1707.56 & 1787.83 & 1826.03 \\
+        \hline
+        $ T_{10} $\;(ms)& 1579.15 & 1666.34 & 1707.44 & 1787.76 & 1825.83 \\
+        \hline
+        $ T $\;(ms)& 1579.25 & 1666.32 & 1707.51 & 1787.59 & 1825.95 \\
+        \hline
+        $ T^2 $\;(s$ ^2 $)& 2.4940 & 2.7766 & 2.9156 & 3.1955 & 3.3341 \\
+        \hline
+    \end{tabularx}
+    \caption{不同质量振子的振动周期}
+\end{table}
+
+利用python中的numpy库和Scipy库进行线性拟合，得到如下结果：
+\newpage
+\begin{figure}[!h]
+    \centering
+    \includegraphics*[scale=0.7]{output.png}
+    \caption{$T^2 - m$拟合直线图}
+\end{figure}
+由图可知，实验数据很好地展现了线性性。根据最小二乘法可求得：
+\(k=\frac{4\pi^2}{11.2433}\,\mathrm{N/m}=3.5113\,\mathrm{N/m},\quad m_0=\frac{5.05\times10^{-2}}{11.2433}\,\mathrm{kg}=4.4916\,\mathrm{g}\)。
+
+\subsection{研究速度和位移的关系}
+滑块A的振幅取40.0\,cm，测量滑块在不同位移下的的速度，实验结果如下：
+\begin{table}[!h]
+    \centering		
+    \renewcommand\arraystretch{1.5}
+    \begin{tabularx}{\textwidth}{|c|Y|Y|Y|Y|Y|}
+        \hline
+        $ x $\;(cm)&10&15&20&25&30\\
+        \hline
+        $ x^2 $\;(m$ ^2 $)&0.01&0.0225&0.04&0.0625&0.09\\
+        \hline
+        $ v_1\;(\mathrm{cm/s}) $&145.988&138.70&130.38&116.14&91.83\\
+        \hline
+        $ v_2\;(\mathrm{cm/s}) $&144.09&136.61&128.37&113.90&89.13\\
+        \hline
+        $ v_3\;(\mathrm{cm/s}) $&142.65&135.14&126.74&111.73&86.43\\
+        \hline
+        $ \bar v\;(\mathrm{cm/s}) $&144.24&136.82&128.50&113.92&89.13\\
+        \hline
+        $ v^2\;(\mathrm{m^2/s^2}) $&2.0805&1.8720&1.6512&1.2978&0.7944\\
+        \hline
+    \end{tabularx}
+    \caption{不同位置的振子速度}
+\end{table}
+
+利用python中的numpy库和Scipy库进行线性拟合，得到如下结果：
+\newpage
+\begin{figure}[!h]
+    \centering
+    \includegraphics*[scale=0.7]{output1.png}
+    \caption{$v^2 - x^2$拟合直线图}
+\end{figure}
+图线线性性良好，符合理论预期，根据实验原理 $v^2 = \omega_0^2(A^2 - x^2)$，可知拟合直线的斜率为 $-\omega_0^2$，而截距则为 $A^2\omega_0^2$。
+
+复用5.2节中振幅 $A = 40.0\,\mathrm{cm} = 0.4\,\mathrm{m}$ 对应的振动周期 $T = 1578.97\,\mathrm{ms} = 1.57897\,\mathrm{s}$，计算得
+
+\[
+-\omega_0^2 = -\frac{4\pi^2}{T^2} = -15.8384\,\mathrm{s^{-2}},\quad A^2\omega_0^2 = 2.534\,\mathrm{m^2/s^2}.
+\]
+
+在实验误差允许范围内，计算得到的斜率和截距分别与本节中拟合直线的斜率与截距近似相等，这验证了 $v^2 = \omega_0^2(A^2 - x^2)$ 关系的正确性。
+
+\subsection{研究振动系统的机械能是否守恒}
+滑块的振幅A取40.0\,cm，复用前面几节的数据，得到如下实验数据表格：
+\begin{table}[!h]
+    \centering
+    \renewcommand\arraystretch{1.5}
+    \begin{tabularx}{\textwidth}{|c|Y|Y|Y|Y|Y|}			
+        \hline
+        $ x $\;(cm)&10&15&20&25&30\\
+        \hline
+        $ x^2 $\;(m$ ^2 $)&0.01&0.0225&0.04&0.0625&0.09\\
+        \hline
+        $ v\;(\mathrm{cm/s}) $&144.24&136.82&128.50&113.92&89.13\\
+        \hline
+        $ v^2\;(\mathrm{m^2/s^2}) $&2.0805&1.8720&1.6512&1.2978&0.7944\\
+        \hline
+        $ E_k=\frac12(m_0+m_1)v^2\;(\mathrm J) $&0.2405&0.2164&0.1908&0.1500&0.0918\\
+        \hline
+        $ E_p=\frac12kx^2\;(\mathrm J) $&0.0176&0.0395&0.0702&0.1097&0.1580\\
+        \hline
+        $ E=E_k+E_p\;(\mathrm J) $&0.2581&0.2559&0.2610&0.2597&0.2498\\
+        \hline
+    \end{tabularx}
+    \caption{验证机械能守恒数据记录}
+\end{table}
+
+理论上可计算得到系统总机械能
+	\[E=\frac 12kA^2=0.2605\,\mathrm J\]
+	根据上表数据可作出如下图象：
+    \begin{figure}[!h]
+        \centering
+        \includegraphics*[scale=0.7]{output2.png}
+        \caption{$ E_k,\,E_p,\,E_k+E_p $与位移$ x $的关系}
+    \end{figure}
+由上图可知，在实验误差允许范围内，系统的总机械能近似守恒。实验中实际得到的机械能略小于理论值，这可能是由于实验中无法完全消除摩擦力等阻力的影响导致的。
+
+\subsection{由$ v_\max^2-A^2 $关系求$ k $}
+实验数据记录表如下：
+\begin{table}[!h]
+    \centering		
+    \renewcommand\arraystretch{1.5}
+    \begin{tabularx}{\textwidth}{|c|Y|Y|Y|Y|Y|}
+        \hline
+        $ A $\;(cm)&10&15&20&25&30\\
+        \hline
+        $ A^2 $\;(m$ ^2 $)&0.01&0.0225&0.04&0.0625&0.09\\
+        \hline
+        $ v_{\max 1} $\;(cm/s)&39.11&56.53&77.16&95.69&114.55\\
+        \hline
+        $ v_{\max 2} $\;(cm/s)&38.33&55.65&75.93&94.25&112.95\\
+        \hline
+        $ v_{\max 3} $\;(cm/s)&37.85&54.94&75.19&93.37&112.11\\
+        \hline
+        $ \bar v_{\max} $\;(cm/s)&38.43&55.71&76.09&94.45&113.20\\
+        \hline
+        $ v^2_{\max} $\;(m$ ^2 $/s$ ^2 $)&0.1477&0.3104&0.5790&0.8921&1.2814\\
+        \hline
+    \end{tabularx}
+    \caption{不同振幅下振子最大速度}
+\end{table}
+
+利用python中的numpy库和Scipy库进行线性拟合，得到如下结果：
+\newpage
+\begin{figure}[!h]
+    \centering
+    \includegraphics*[scale=0.7]{output3.png}
+    \caption{$v_{max}^2 - A^2$拟合直线图}
+\end{figure}
+图象斜率为\[ \omega_0^2=\frac km=14.245\,\mathrm{s^{-2}}\;\Longrightarrow\; k=3.5613\,\mathrm{N/m}\]
+	与5.3节中测得的$ k=3.5113\,\mathrm{N/m} $近似相等。
+
+\subsection{其他相关参数}
+滑块的质量：214.87g
+
+条形挡光片质量：2.62g
+    
+U型挡光片质量：11.79g
+
+\subsection{测定瞬时速度，测量不同U型挡光片通过光电门所用的时间（AP=50cm），计算平均速度}
+实验数据记录表如下：
+\begin{table}[!h]
+    \centering
+    \renewcommand\arraystretch{1.7}
+    \begin{tabular}{|l|l|l|l|l|l|l|l|}
+        \hline
+        $\Delta s$&$\Delta t_1$(ms) &$\Delta t_2$(ms)&$\Delta t_3$(ms) &$\Delta t_4$(ms)&$\Delta t_5$ (ms)&$\Delta t$(ms)&$\overline{v}$(m/s)\\\hline
+        1cm&29.29&28.87&28.97&29.06&29.00&29.04&0.344 \\\hline
+        3cm&86.51&86.25&86.60&86.72&86.13&86.44&0.347\\\hline
+        5cm&143.60&142.46&142.43&143.19&143.35&143.01&0.349\\\hline
+        10cm&279.78&279.76&280.35&279.86&280.13&279.98&0.357\\\hline
+    \end{tabular}
+    \caption{不同挡光片宽度下的振子速度}
+\end{table}
+
+由上表作出$\overline{v} - \Delta t$和$\overline{v} - \Delta s$图像：
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics*[scale=0.7]{output4.png}
+    \caption{$\overline{v} - \Delta s$关系图}
+\end{figure}
+\begin{figure}[!h]
+    \centering
+    \includegraphics*[scale=0.7]{output5.png}
+    \caption{$\overline{v} - \Delta t$关系图}
+\end{figure}
+由线性外推法知$V_0 \approx 0.3423 m/s$。且随着挡光条宽度的变宽，平均速度缓慢增加，与理论预期基本相符。
+
+\subsection{改变导轨倾角，测定瞬时速度与不同U型挡光片通过光电门所用的时间（AP=50cm），计算平均速度}
+\begin{table}[!h]
+    \centering
+    \renewcommand\arraystretch{1.7}
+    \begin{tabular}{|l|l|l|l|l|l|l|l|}
+        \hline
+        $\Delta s$&$\Delta t_1$(ms) &$\Delta t_2$(ms)&$\Delta t_3$(ms) &$\Delta t_4$(ms)&$\Delta t_5$ (ms)&$\Delta t$(ms)&$\overline{v}$(m/s)\\\hline
+        1cm&20.94&20.90&20.89&20.94&20.96&20.93&0.478 \\\hline
+        3cm&62.45&62.36&62.41&62.37&62.42&62.40&0.481\\\hline
+        5cm&102.89&102.80&102.78&103.04&102.93&102.89&0.486\\\hline
+        10cm&201.53&201.37&201.10&201.95&201.26&201.44&0.496\\\hline
+    \end{tabular}
+    \caption{改变倾角后不同挡光条宽度下的振子速度}
+\end{table}
+
+由上表作出$\overline{v} - \Delta t$和$\overline{v} - \Delta s$图像：
+\begin{figure}[!h]
+    \centering
+    \includegraphics*[scale=0.7]{output6.png}
+    \caption{$\overline{v} - \Delta s$关系图}
+\end{figure}
+\begin{figure}[!h]
+    \centering
+    \includegraphics*[scale=0.7]{output7.png}
+    \caption{$\overline{v} - \Delta t$关系图}
+\end{figure}
+\newpage
+由线性外推法知$V_0 \approx 0.4754 m/s$。且随着挡光条宽度的变宽，平均速度缓慢增加，与理论预期基本相符。同时，倾角增加后振子瞬时速度加快，符合预期。
+
+\subsection{测定瞬时速度与不同U型挡光片通过光电门所用的时间（AP=60cm），计算平均速度}
+\begin{table}[!h]
+    \centering
+    \renewcommand\arraystretch{1.7}
+    \begin{tabular}{|l|l|l|l|l|l|l|l|}
+        \hline
+        $\Delta s$&$\Delta t_1$(ms) &$\Delta t_2$(ms)&$\Delta t_3$(ms) &$\Delta t_4$(ms)&$\Delta t_5$ (ms)&$\Delta t$(ms)&$\overline{v}$(m/s)\\\hline
+        1cm&19.20&19.12&19.17&19.28&19.23&19.20&0.521 \\\hline
+        3cm&57.16&57.35&57.13&57.42&57.17&57.25&0.524\\\hline
+        5cm&94.39&94.43&94.38&94.51&94.30&94.40&0.530\\\hline
+        10cm&186.23&185.59&185.95&185.63&185.78&185.84&0.538\\\hline
+    \end{tabular}
+    \caption{改变起点距离后不同挡光条宽度下的振子速度}
+\end{table}
+
+由上表作出$\overline{v} - \Delta t$和$\overline{v} - \Delta s$图像：
+\newpage
+\begin{figure}[!h]
+    \centering
+    \includegraphics*[scale=0.7]{output8.png}
+    \caption{$\overline{v} - \Delta s$关系图}
+\end{figure}
+\begin{figure}[!h]
+    \centering
+    \includegraphics*[scale=0.7]{output9.png}
+    \caption{$\overline{v} - \Delta t$关系图}
+\end{figure}
+由线性外推法知$V_0 \approx 0.5189 m/s$。且随着挡光条宽度的变宽，平均速度缓慢增加，与理论预期基本相符。同时，AP距离增加后振子瞬时速度加快，符合预期。
+
+\section{讲义思考题}
+\subsection{仔细观察，可以发现滑块的振幅是不断减小的，那么为什么还可以认为滑块是做简谐振动？实验中应如何尽量保证滑块做简谐振动？}
+{\kaishu 尽管气垫导轨能够显著降低滑块与导轨之间的滑动摩擦力，但这并不意味着摩擦完全消失，同时空气阻力等其他形式的阻力也无法完全排除。因此，滑块的振幅会随着时间逐渐减小。然而，这类阻力通常较小，在误差允许的范围内可以忽略不计。此外，在实验实际操作中，为了减小阻尼对实验结果的影响，采取了多次测量取平均值以及仅保留初次测量数据等方法，从而可以近似认为滑块是完成简谐振动的。}
+
+{\kaishu 为保证滑块能够近似进行简谐振动，实验中需尽量通过精调将气垫导轨调整至水平状态。这一调整可以通过在较小速度下（例如 $v_1,\,v_2$）验证其精度来实现，即在调整过程中确保两者的误差始终小于 0.5\%。}
+
+\subsection{试说明弹簧的等效质量的物理意义，如不考虑弹簧的等效质量，则对实验结果有什么影响？}
+{\kaishu 在理论模型或推导中，通常假设弹簧是轻质的，不具有质量。然而在实际实验中，弹簧不可避免地具有一定的质量，因此它会积累并获得部分动能。所谓弹簧的等效质量，其物理意义在于它是弹簧中参与滑块运动、需要计算动能的那部分质量，也可以理解为增加到滑块上的等效附加质量。以下是等效质量的具体推导：}
+
+{\kaishu 设弹簧的总长度为 $l$，线密度为 $\rho_l$，弹簧的形变假设与距离固定点的距离 $\xi$ 成正比，弹簧末端的位移为 $x$。取弹簧长度为 $\dif\xi$ 的微元，计算该微元的动能，并在整个弹簧长度范围上对其积分以求出弹簧的总动能 $E$。最终可得：}
+
+\[
+E_1 = \frac{1}{2}\rho_l\int_0^l\left(\frac{\dot{x}\xi}{l}\right)^2 \dif\xi = \frac{1}{2}\left(\frac{m_1}{3}\right)\dot{x}^2
+\]
+
+{\kaishu 其中，$m_1 = \rho_l l$ 表示弹簧的总质量。将公式中的 $\frac{m_1}{3}$ 定义为弹簧的等效质量 $m_e$。设振动系统中滑块的质量为 $m$，则考虑弹簧质量后的系统总动能可写为：}
+
+\[
+E = \frac{1}{2}(m + m_e)\dot{x}^2
+\]
+
+{\kaishu 在实验过程中，如果忽略弹簧的等效质量，则所计算出的系统动能会偏小。这种误差可能导致无法验证机械能守恒的结论，或者在利用 $v_\max^2 - x^2$ 的关系计算弹簧倔强系数 $k$ 时，导致计算结果偏小。}
+
+\subsection{测量周期时，光电门是否必须在平衡位置上？如不在平衡位置会产生什么不同的结果？}
+{\kaishu 从理论上来说，测量振动周期时并不需要将光电门放在平衡位置。因为只要在振幅范围内的任意位置固定光电门，光电门捕获相邻两个周期内该点的同相位点，其时间差皆为一个完整周期。然而，在实际实验中，由于无法完全消除阻尼效应，简谐振动的振幅会逐渐减小，从而导致非平衡位置在不同周期内所对应的相位点发生变化。这不仅会带来振动周期测量中的误差，甚至可能导致挡光片无法成功完成遮光。因此，在实际操作中，需要将光电门固定在平衡位置上，以确保测量的准确性与可靠性。}
+
+\subsection{气垫导轨如果不水平，是否能进行该实验？}
+{\kaishu 理论上，即使气垫导轨存在一定的倾斜，弹簧仍然能够完成简谐振动。此时只需将导轨的倾斜角度引入模型，并把重力的影响纳入计算即可开展实验。然而，在实际操作中，这样的设置会增加数据处理的复杂性，同时导轨的倾斜角度可能非常小，导致难以精确测量和校正。因此，在实验中应尽量将气垫导轨调至水平，以简化计算并提高实验的准确性。}
+
+\subsection{使用平板形挡光片和两个光电门，如何测量滑块通过倾斜气轨上某一点的瞬时速度？}
+{\kaishu 在使用气垫导轨测量滑块在倾斜气轨上某点的瞬时速度时，首先需要在滑块经过的特定位置安装一块平板形挡光片，并在挡光片的两侧分别布置两个光电门。当滑块通过挡光片时，光电门依次被遮挡并记录滑块通过的时间间隔 $\Delta t$。通过更换不同宽度的挡光条，可以得到不同的阻挡时间 $\Delta t$，并据此计算滑块的对应平均速度 $\overline{v}$。具体而言，挡光条的宽度越大，遮挡光电门的时间 $\Delta t$ 越长，平均速度 $\overline{v}$ 可通过已知挡光条宽度与 $\Delta t$ 的关系予以计算。
+
+接下来，将不同挡光条宽度对应的平均速度 $\overline{v}$ 与时间间隔 $\Delta t$ 绘制成图，并进行线性拟合，得到线性关系 $\overline{v} = a \Delta t + b$。利用线性外推法，在挡光条宽度趋近于零的极限情况下，$\Delta t$ 也趋向于零，此时拟合直线的纵截距 $b$ 即为滑块在该点的瞬时速度 $v$。
+
+这种方法通过调节挡光条宽度来获取对应条件下的平均速度数据，结合线性拟合和外推技术，从而能够准确地测定滑块在某点的瞬时速度。}
+\subsection{气垫导轨如果不水平，对瞬时速度的测定有什么影响？}
+{\kaishu 轨道倾斜会导致重力在导轨方向上产生一个额外的分力，这个分力会使滑块产生加速度或减速度，进而影响其速度变化。具体来说，若导轨向下倾斜，滑块会因重力分力而加速，导致实际测得的瞬时速度不仅受到初始推动力的影响，还受到持续增加的重力作用，使得随着挡光片间距$\Delta s$增加，滑块的平均速度$\overline{v}$也增加；反之，若导轨向上倾斜，滑块则会减速，甚至可能停止，使得随着挡光片间距$\Delta s$增加，滑块的平均速度$\overline{v}$下降。}
+\subsection{每次测量滑块和U型挡光片总质量不同是否对瞬时速度测定有影响？}
+{\kaishu 在实验中，每次测量滑块和U型挡光片的总质量不同会对瞬时速度的测定产生影响。虽然在理想情况下，如果气垫导轨是完全无摩擦的，滑块的质量不应影响其速度，因为根据牛顿第二定律，加速度由外力决定而与质量无关。然而，实际实验中往往存在微小的摩擦力或空气阻力，这些阻力通常与滑块的质量相关。质量较大的滑块可能会由于更大的惯性而在通过挡光片时减少速度变化，或者如果摩擦力与质量成正比，较大的质量可能会导致更高的摩擦力，从而影响滑块的速度。此外，不同质量的滑块和挡光片可能还会影响气垫导轨的气流分布，进一步影响运动状态。因此，为了确保瞬时速度测定的准确性，应该尽量保持每次测量中滑块与挡光片的总质量一致，或者在数据分析时考虑质量变化带来的影响，以减少系统性误差。}
+
+\section{实验心得体会}
+在本次气垫导轨上弹簧振子的简谐振动及瞬时速度测定的物理实验中，我深入体验了实验设计、操作、数据处理及误差分析的全过程。这不仅加深了我对简谐振动理论的理解，也提升了我在实际操作和数据分析中的技能。以下将从实验操作的注意事项、数据处理方法、误差分析及实验对未来科研的启示等方面进行详细反思与心得体会。
+
+首先，实验操作中的细节处理对实验结果的准确性至关重要。气垫导轨的调平是确保实验顺利进行的基础。通过调节导轨上的垫块，使其达到水平状态，可以有效减少由于导轨倾斜引起的额外摩擦力和不必要的加速度变化。在实验过程中，我发现即使是微小的倾斜也会对滑块的振动周期和瞬时速度产生显著影响。因此，初步的粗调与后续的精细调节必须细致入微，确保导轨的高度差异在允许范围内。此外，滑块和弹簧的安装位置、光电门的对准以及挡光片的固定方式也需要特别注意。这些细节不仅影响数据的稳定性和重复性，还直接关系到实验数据的可靠性。
+
+在数据处理方面，现代计算工具的应用极大地提升了数据分析的效率和精度。本次实验中，我使用了Python中的numpy、matplotlib和Scipy等库进行数据处理与绘图操作。通过numpy进行数据的快速处理与计算，利用matplotlib绘制速度-时间图、速度-位移图等多种图表，直观地展示实验数据的变化趋势。Scipy库中的曲线拟合功能则帮助我更准确地提取瞬时速度和弹簧的倔强系数。这些工具不仅简化了数据处理的流程，还提高了数据分析的准确性，使我能够更深入地理解实验数据背后的物理意义。此外，编写脚本自动化处理数据，减少了人为操作中的误差，提高了实验结果的可靠性和重复性。
+
+然而，实验过程中不可避免地存在各种误差，这些误差对实验结果的准确性产生了重要影响。气垫导轨上的摩擦力与空气阻力是主要的系统误差来源之一。尽管气垫导轨大幅降低了滑块的摩擦力，但依然存在微小的摩擦和空气阻力，这些因素会影响滑块的振动周期和瞬时速度的测量。此外，测量过程中光电门的响应时间和挡光片的位置也可能引入随机误差。为了减小这些误差的影响，我在实验过程中采取了多次测量取平均值的方法，保证数据的稳定性。此外，通过对数据的最小二乘法拟合，可以有效地减小随机误差的影响，提高实验结果的精度。在未来的实验中，可以进一步优化实验装置，采用更高精度的测量工具，或者在数据处理阶段引入更多的误差校正方法，以提高实验数据的可信度。
+
+本次实验不仅帮助我巩固了简谐振动的理论知识，还提升了我在实际科研中的多项技能。首先，实验培养了我的动手能力和实验设计能力。通过实际操作，我深入理解了理论与实际应用的结合点，认识到实验设计的严谨性和操作的细致性对结果的重要性。其次，数据处理部分的训练，使我掌握了利用现代编程工具进行科学数据分析的基本方法，这在未来的科研工作中将是一个重要的技能。此外，误差分析的过程让我意识到科学研究中精确性与客观性的必要性，培养了我严谨的科学态度和批判性思维能力。
+
+在未来的科研工作中，这次实验的经验将对我大有裨益。首先，实验中所掌握的数据处理方法和工具将应用于更为复杂的数据分析中，帮助我高效地处理大量实验数据。其次，对误差来源的分析和控制方法，将指导我在设计实验时更加注重细节，减少系统误差和随机误差的影响。此外，这次实验的研究方法也为我未来进行类似研究提供了参考，特别是在研究振动系统的机械能守恒性和瞬时速度测量方面，这些方法可以直接应用于更复杂的物理系统研究中。
+
+总的来说，本次气垫导轨上弹簧振子的简谐振动及瞬时速度测定实验不仅是一次理论与实践相结合的宝贵经验，更是一次技能提升和科研思维培养的机会。通过细致的实验操作、严谨的数据处理和深入的误差分析，我不仅验证了简谐振动的基本理论，还积累了丰富的实验经验。这些体验和技能的积累，为我未来的物理研究提供了坚实的基础，也激励我在科学探索的道路上不断前行。
+\end{document}
