@@ -1,0 +1,468 @@
+\documentclass[UTF-8,twoside,cs4size]{ctexart}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{geometry}
+\usepackage{setspace}
+\usepackage{xeCJK}
+\usepackage{ulem}
+\usepackage{pstricks}
+\usepackage{pstricks-add}
+\usepackage{bm}
+\usepackage{mathtools}
+\usepackage{breqn}
+\usepackage{mathrsfs}
+\usepackage{esint}
+\usepackage{textcomp}
+\usepackage{upgreek}
+\usepackage{pifont}
+\usepackage{tikz}
+\usepackage{circuitikz}
+\usepackage{caption}
+\usepackage{tabularx}
+\usepackage{array}
+\newcolumntype{Y}{>{\centering\arraybackslash}X}
+\usepackage{pgfplots}
+\usepackage{multirow}
+\usepackage{pgfplotstable}
+\usepackage{mhchem}
+\usepackage{physics} % Add this package for \dt and \dif commands
+\usepackage{cases}
+\usepackage{subfigure}
+\usepackage{enumerate}
+\usepackage{minipage-marginpar}
+\usepackage{diagbox}
+\usepackage{graphicx}
+
+\graphicspath{{./figure/}}
+
+\setCJKfamilyfont{zhsong}[AutoFakeBold = {5.6}]{STSong}
+\newcommand*{\song}{\CJKfamily{zhsong}}
+
+\geometry{a4paper,left=2cm,right=2cm,top=0.75cm,bottom=2.54cm}
+
+\newcommand{\experiName}{傅里叶光学基础}%实验名称
+\newcommand{\supervisor}{张秋琳}%指导教师
+\newcommand{\name}{孙奕飞}
+\newcommand{\studentNum}{2023k8009925001}
+\newcommand{\class}{2}%班级
+\newcommand{\group}{06}%组
+\newcommand{\seat}{01}%座位号
+\newcommand{\dateYear}{2024}
+\newcommand{\dateMonth}{11}%月
+\newcommand{\dateDay}{12}%日
+\newcommand{\room}{教705}%地点
+\newcommand{\others}{$\square$}
+
+\ctexset{
+    section={
+        format+=\raggedright\song\large
+    },
+    subsection={
+        name={\quad,.}
+    },
+    subsubsection={
+        name={\qquad,.}
+    }
+}
+
+\begin{document}
+\noindent
+
+\begin{center}
+
+    \textbf{\song \zihao{-2} \ziju{0.5}《基础物理实验》实验报告}
+    
+\end{center}
+
+
+\begin{center}
+    \kaishu \zihao{5}
+    \noindent \emph{实验名称}\underline{\makebox[28em][c]{\experiName}}
+    \emph{指导教师}\underline{\makebox[9em][c]{\supervisor}}\\
+    \emph{姓名}\underline{\makebox[6em][c]{\name}} 
+    \emph{学号}\underline{\makebox[14em][c]{\studentNum}}
+    \emph{分班分组及座号} \underline{\makebox[5em][c]{\class \ -\ \group \ -\ \seat }\emph{号}} \\
+    \emph{实验日期} \underline{\makebox[3em][c]{\dateYear}} \emph{年}
+    \underline{\makebox[2em][c]{\dateMonth}}\emph{月}
+    \underline{\makebox[2em][c]{\dateDay}}\emph{日}
+    \emph{实验地点}\underline{{\makebox[4em][c]\room}}
+    \emph{调课/补课} \underline{\makebox[3em][c]{否}}
+    \emph{成绩评定} \underline{\hspace{8em}}
+    {\noindent}
+    \rule[5pt]{17.7cm}{0.2em}
+\end{center}
+
+\section{实验目的}
+\begin{enumerate}
+    \item 掌握在一维导轨上调节光路的方法。
+    \item 通过搭建阿贝成像光路并观察不同空间滤波器的效果，理解成像过程及相关物理概念，如频谱面、谱空间与实空间的对应关系、空间滤波和衍射等。
+    \item 理解并掌握光学 \(4F\) 成像系统的构建方法；在阿贝成像实验基础上，进一步感受更复杂的光学信息处理。
+    \item 在基本空间滤波的基础上，进一步体验光栅衍射的色散效应与选频滤波操作，掌握\(\theta\) 调制的假彩色编码和色散选区滤波的原理；并利用提前预制分区信息的光栅图案，实现该图像的假彩色编码。
+    \item 将透射光栅引入光路中，观察衍射图样，并利用光栅方程计算光栅常数 \(d\)，进一步理解衍射的原理。
+    \item 利用光谱仪测量激光或白光经光栅衍射后的光谱与波长，并判断实验结果是否符合理论预期。
+\end{enumerate}
+
+\section{实验仪器}
+\subsection{阿贝成像与基本空间滤波}
+\begin{itemize}
+    \item 激光器组件：激光器、棱镜夹持器、一维平移台、宽滑块、支杆和套筒
+    \item 扩束镜组件：凹透镜\(\left( \varPhi 6, f = -10\,\text{mm} \right)\)、透镜架、滑块、支杆和套筒
+    \item 准直镜组件：凸透镜\(\left( \varPhi 40, f = 80\,\text{mm} \right)\)、透镜架、滑块、支杆和套筒
+    \item 光栅字组件：光栅字\(\left( \varPhi 40, 10\ \text{线}/\text{mm} \right)\)、滑块、支杆和套筒
+    \item 变换透镜组件：凸透镜\(\left( \varPhi 76, f = 175\,\text{mm} \right)\)、镜架、滑块、支杆和套筒
+    \item 滤波器组件：滤波器（低通、方向滤波）、干板架、滑块、支杆和套筒
+    \item 白屏组件：白屏、干板架、滑块、支杆和套筒
+\end{itemize}
+
+\subsection{光学4F系统成像}
+\begin{itemize}
+    \item 光源组件：半导体激光器\(\lambda = 650\,\text{nm}\)，一维平移台、宽滑块、支杆和套筒
+    \item 准直镜组件：凹透镜\(\left( \varPhi 6, f = -9.8\,\text{mm} \right)\)、凸透镜\(\left( \varPhi 25, f = 80\,\text{mm} \right)\)、透镜架、滑块、支杆和套筒
+    \item 调制物组件：物板、干板架、滑块、支杆和套筒
+    \item 变换透镜组件：两个凸透镜\(\left( \varPhi 40, f = 150\,\text{mm} \right)\)、镜架、滑块、支杆和套筒
+    \item 滤波器组件：滤波器（低通、方向滤波）、精密平移台、干板夹、滑块、支杆和套筒
+    \item 白屏组件：白屏、干板架、滑块、支杆和套筒
+\end{itemize}
+
+\subsection{假彩色编码}
+\begin{itemize}
+    \item 光源组件：白光LED、一维平移台、宽滑块、支杆和套筒
+    \item 准直镜组件：凸透镜\(\left( \varPhi 40, f = 80\,\text{mm} \right)\)、透镜架、滑块、支杆和套筒
+    \item 调制物组件：天安门光栅\(\left( 100\ \text{线}/\text{mm} \right)\)、干板架、滑块、支杆和套筒
+    \item 变换透镜组件：凸透镜\(\left( \varPhi 76, f = 175\,\text{mm} \right)\)、镜架、滑块、支杆和套筒
+    \item 滤波器组件：滤波器、干板架、滑块、支杆和套筒
+    \item 白屏组件：白屏、干板架、滑块、支杆和套筒
+\end{itemize}
+
+\subsection{光栅与光学仪器}
+\begin{itemize}
+    \item 透射光栅
+    \item \(OTO \enspace SE1040\) 便携式光栅光谱仪
+    \item \(1200\,\text{线}/\text{mm}\) 光栅
+    \item CCD 感光元件
+    \item \(23\,\mu\text{m}\) 狭缝
+\end{itemize}
+
+\section{实验原理}
+\subsection{阿贝成像与基本空间滤波}
+\begin{enumerate}
+    \item 任意物体在单色平行入射的相干光源下的调制过程可理解为由一系列沿着空间方向变化的余弦光栅组成的傅里叶变换。因为 \( x \) 和 \( y \) 方向是独立的，首先考虑光栅在 \( x \) 方向的变化。设不同频率的余弦光栅的空间频率为 \( f_i \)，波前表达式为：
+    \begin{equation}
+        U(x, y) = A\left(t_0 + t_1 \cos(2 \pi f_i x)\right)
+    \end{equation}
+
+    \item 仅考虑一个单频信息 \( f_i \)，经过物镜变换后，光场会在后焦面形成三个点状衍射斑 \( S_0 \)、\( S_{+1} \) 和 \( S_{-1} \)。其中，\( S_0 \) 位于 \( x \)-\( y \) 平面的中心，而 \( S_{+1} \) 和 \( S_{-1} \) 则对称分布在 \( x \) 轴的偏轴位置，且偏轴距离满足：
+    \begin{equation}
+        S_{\pm 1} = \pm F \tan{\theta_i}
+    \end{equation}
+    其中
+    \begin{equation}
+        \sin{\theta_i} = f_i \lambda
+    \end{equation}
+
+    \item 这三个点光源等效为新的次级光源，产生球面波，其光场复振幅分别为：
+    \begin{equation}
+        A_0 \propto A_1 t_0 e^{ikL(BS_0)}
+    \end{equation}
+    \begin{equation}
+        A_{+1} \propto \frac{1}{2} A_1 t_1 e^{ikL(BS_{+1})}
+    \end{equation}
+    \begin{equation}
+        A_{-1} \propto \frac{1}{2} A_1 t_1 e^{ikL(BS_{-1})}
+    \end{equation}
+
+    \item 这三个相干点光源在像平面上会形成干涉，其干涉场的表达式为：
+    \begin{equation}
+        U_{im} (x', y') = K e^{i k \frac{{x'}^2 + {y'}^2}{2z}} A_1 \left( t_0 + t_1 \cos(2 \pi f'_i x') \right)
+    \end{equation}
+    
+    从这公式可以看出，物体的信息被重构为几何上相似但空间频率为 \( f'_i \) 的信号。在像平面上，图像由 \( f'_i \) 的组合所构成，放大率为 \( V = \frac{f'_i}{f_i} \)。频谱面上，\( S_0 \) 代表物信息中的 0 频信息 \( A_1 t_0 \)，其位置位于原点；而正负方向的衍射点 \( S_{+1}, S_{-1} \) 分别对应空间频率 \( f'_i \) 的信息 \( A_1 t_1 \)，位置由焦距和衍射角决定。
+\end{enumerate}
+
+\subsection{光学4F系统成像}
+单透镜成像时，像场函数为：
+\begin{equation}
+    U_{im} (x', y') = K e^{i k \frac{{x'}^2 + {y'}^2}{2z}} U_{ab}\left(\frac{x'}{V}, \frac{y'}{V}\right)
+\end{equation}
+
+像场函数与原物场函数仅相差一个相位因子。在相干光学中，通常要求处理后的图像具有与原物场一致的相位。
+
+光学 4F 图像处理系统通过两个透镜依次实现傅里叶变换和傅里叶逆变换。在该系统中，物场函数位于傅里叶透镜的焦平面处，在无限远处成像。因此，式 (7) 中的相位因子趋近于 1。傅里叶逆变换透镜重新将无限远处的像重聚在透镜的焦平面上。当不存在滤波且放大倍率为 1 时，4F 系统的像场完全复制了原物场。
+
+\subsection{假彩色编码}
+可以利用白光光源照明预先编码了不同方向光栅的天安门图案，然后结合不同颜色的滤波器或空间选色滤波器，来实现天安门图像的区域假彩色编码。
+
+实验中，天空、天安门和草地分别通过三次曝光预置了不同方向刻线的光栅，空间频率为 100 线/\text{mm}。当白光源照射物面上的被调制物后，携带物体信息的衍射场沿光路传播。衍射光强的分布与光的频率相关。白光入射后，经过光栅衍射，呈现出多彩的颜色。衍射场经过透镜汇聚后，在频谱面上产生清晰的彩色频谱图案。由于光栅方向在天安门图案上不同区域呈现变化，因此其衍射图案在三个不同的方向上展开，呈现出彩色的条状花样。可以通过多色滤片或通过一张只允许特定部分通过的白纸，实现区域的假彩色编码。
+
+\subsection{光栅和光谱仪器}
+\subsubsection{夫琅和费衍射实验}
+将分划板放入光路中，看衍射图样的变化，根据所学判断衍射图样与分划板参数是否一
+致。 
+\subsubsection{光栅衍射演示实验}
+光栅衍射满足以下方程：
+\begin{equation}
+    d \sin \theta = m \lambda, \quad m \in \mathbb{Z}
+\end{equation}
+
+已知激光的波长，根据衍射图样中衍射点的间距和光栅至屏幕的距离，可以计算出光栅的光栅常数。
+
+\subsubsection{光栅光谱仪测光谱实验}
+光栅光谱仪通过光栅将复杂光源分解为不同颜色的单色光，从而得到其光谱信息。
+
+\section{实验内容}
+\subsection{阿贝成像与基本空间滤波}
+\begin{enumerate}
+    \item 调节激光器光路使其平行。打开激光器，将白屏放置在激光器附近，并在激光光斑位置做上标记。逐渐远离白屏，调整激光器的微调旋钮，直到激光始终打在之前标记的位置上。
+    
+    \item 根据讲义中的示意图布置光路。从左至右依次为：激光器组件、扩束镜组件、准直镜组件、光栅字组件、变换透镜组件、滤波器组件和白屏组件。各组件之间的距离分别为：40 mm，70 mm，40 mm，240 mm，195 mm 和 445 mm。
+    
+    \item 安装扩束镜。上下调节扩束镜的支杆，直到扩束光斑的中心与参考中心重合，之后固定扩束镜的位置。
+    
+    \item 安装准直镜。上下调整准直镜的支杆，使平行光束的光斑与参考中心对齐，然后固定准直镜。
+    
+    \item 安装光栅字。通过上下调节光栅字的支杆，使得激光光斑准确正入射到“光”字的表面，然后固定光栅字的位置。
+    
+    \item 安装变换透镜。上下调节变换透镜支杆，使“光”字的入射光束通过变换透镜的中心。前后移动变换透镜，直到在白屏上能够成像出清晰的放大倒立实像，随后固定变换透镜。
+    
+    \item 观察“光”字的像，特别注意没有滤波器时产生的条纹结构。
+    
+    \item 安装滤波器。调整其位置，使光斑能够透过滤波器的中心，沿导轨前后移动滤波器，直到观察到最清晰的衍射花样，这时的滤波器正位于变换透镜的频谱面。此时固定滤波器支架。
+    
+    \item 观察此时白屏上的像，仔细观察衍射条纹的形态。
+    
+    \item 测试不同滤波器。在滤波器支架上替换不同的滤波器，观察滤波后屏上图像的变化效果。在测试过程中，注意保持其他光学器件的位置不变。
+    
+    \item 自制滤波器，重复第 (10) 步的流程进行测试。
+\end{enumerate}
+
+\subsection{光学4F系统成像}
+\begin{enumerate}
+    \item 在前一个实验的基础上，保持激光器、扩束镜和准直镜的位置不变，移除其他光学器件。
+    
+    \item 将实验提供的物孔垂直安装在一个支架上。上下调节支杆，使准直后的光束中心正好入射物孔位置，然后固定支杆和物孔支架的滑块。
+    
+    \item 在物孔的后方安装变换透镜1 (\(f = 150 \, \text{mm}\))，上下调节支杆，使物孔后的光束通过变换透镜1的中心。固定支杆，并将变换透镜1尽可能靠近物孔，随后固定变换透镜1的支撑滑块。
+    
+    \item 在变换透镜1后方安装变换透镜2 (\(f = 150 \, \text{mm}\))，同样上下调节支杆，使变换透镜1后的光束通过变换透镜2的中心。固定支杆，并将变换透镜2移动至与变换透镜1相距两倍焦距的位置，随后固定变换透镜2的支撑滑块。
+    
+    \item 在白屏上观察成像的特征，重点对比阿贝成像与单透镜成像的区别。
+    
+    \item 在频谱面上安装滤波器，并观察成像后的变化情况。
+\end{enumerate}
+
+\subsection{假彩色编码}
+\subsubsection{光路布置和调节}
+\begin{enumerate}
+    \item 根据讲义中的图片布置光路。从左至右依次为光源组件、准直镜组件、调制物组件、变换透镜组件、滤波器组件和白屏组件。组件之间的距离依次为：80 mm、40 mm、275 mm、160 mm 和 335 mm。
+    
+    \item 安装白光 LED 光源。调节 LED 光源支杆的高度，并将光源调整到接近支杆中心位置，确保 LED 发光点距离支杆顶端约为 90 mm，之后固定光源的位置。
+    
+    \item 将白屏安装在导轨的右端，并尽量将白屏放置得远一些。
+    
+    \item 在距离 LED 发光点约 80 mm 的位置放置准直透镜。调节透镜高度，使 LED 发光点与准直透镜的中心在同一水平线上，并确保透过光束投射到白屏中心。确认后固定准直透镜的垂直高度。
+    
+    \item 水平调节准直透镜位置，直到白光经过透镜后，形成远近光斑大小一致的准直光束。然后固定准直透镜的支撑滑块。
+    
+    \item 安装天安门光栅。上下调节支杆，使光斑正好入射在天安门图案的中心位置，随后固定光栅组件。
+    
+    \item 安装变换透镜。上下调节支杆，使光束尽量通过变换透镜的中心。在白屏上应该能看到模糊的像。前后移动变换透镜，直到白屏上出现清晰的倒立放大实像，然后固定变换透镜的水平位置。
+\end{enumerate}
+\subsubsection{$\theta$调制及现象观察}
+\begin{enumerate}
+    \item 安装提供的 \(\theta\) 调制滤波器到滤波器支架上，然后调整 \(\theta\) 调制滤波器的正反、上下以及左右位置，使得滤波器上的三色滤片与频谱面上对应的衍射花样分支匹配。
+    
+    \item 准备一张硬纸片，将其放置在频谱面上，并标记三色衍射花样的对应方向。根据标记的位置，挖出纸片需要让光通过的部分，然后将自制滤波器放回频谱面进行滤波，并观察实验效果。
+\end{enumerate}
+\subsection{光栅与光谱仪器}
+\subsubsection{夫琅和费衍射实验}
+\begin{enumerate}
+    \item 撤掉之前光路中的实验仪器，并将白光光源换为激光器。
+    
+    \item 将两种不同的分划板放入光路中，并在分划板后放置白屏。观察衍射图样的变化，并观察不同种类衍射图样之间的区别。
+\end{enumerate}
+\subsubsection{光栅衍射演示实验}
+\begin{enumerate}
+    \item 将上一个实验中的分划板换为指定光栅
+    
+    \item 测量衍射图样中不同衍射点之间的间距和光栅至屏幕的距离，根据公式(9)计算出光栅的光栅常数，并与理论值进行比较，验证实验结果。
+\end{enumerate}
+\subsubsection{光栅光谱仪测光谱实验}
+使用手持式光栅光谱仪和SpectraSmart软件测量激光或白光的光栅衍射光的光谱和波长，判断
+与经验值是否一致
+
+
+\section{实验结果}
+\subsection{阿贝成像与基本空间滤波}
+\subsubsection{实验光路搭建}
+按照讲义搭建出如下图所示的实验光路：
+\begin{figure}[!h]
+    \centering
+    \includegraphics[scale=0.1]{fig1.jpg}
+    \caption{实验光路搭建}
+\end{figure}  
+
+\subsubsection{未安装滤波器时的成像}
+\begin{figure}[!h]
+    \centering
+    \includegraphics[scale=0.08]{fig2.jpg}
+    \caption{为加滤波器时的成像效果}
+\end{figure} 
+\newpage
+受限于拍摄条件与手机相机像素，实验中拍摄
+\subsubsection{频谱点}
+\begin{figure}[!h]
+    \centering
+    \includegraphics[scale=0.08]{fig3.jpg}
+    \caption{频谱点}
+\end{figure} 
+观察上图，频谱点的图像与讲义中图像较为一致。
+\subsubsection{安装滤波器后的成像}
+\begin{figure}[!h]
+    \centering
+    \includegraphics[scale=0.06]{阿贝横向.jpg}
+    \caption{加入横向滤波器后的成像}
+\end{figure}
+\begin{figure}[!h]
+    \centering
+    \includegraphics[scale=0.08]{阿贝纵向.jpg}
+    \caption{加入纵向滤波器后的成像}
+\end{figure}
+\newpage
+加入横向和纵向滤波器后，可以观察到成像得到的光字中分别有横向和纵向的条纹，与理论预期相符。
+\begin{figure}[!h]
+    \centering
+    \includegraphics[scale=0.15]{阿贝单孔.jpg}
+    \caption{加入单孔滤波器后的成像}
+\end{figure}
+加入单孔滤波器后，原有图像中光字的条纹全部消失，现象符合理论预期。
+
+\subsection{光学4F系统成像}
+\subsubsection{未加滤波器时的成像}
+未加滤波器时，可以在光屏上看到清晰的倒立等大的清晰实像，如下图所示：
+\newpage
+\begin{figure}[!h]
+    \centering
+    \includegraphics[scale=0.1]{4F未加.jpg}
+    \caption{未加滤波器时的成像}
+\end{figure}
+\subsubsection{加入滤波器后的成像}
+\newpage
+\begin{figure}[!h]
+    \centering
+    \includegraphics[scale=0.07]{4F横向.jpg}
+    \caption{加入横向滤波器后的成像}
+\end{figure}
+\begin{figure}[!h]
+    \centering
+    \includegraphics[scale=0.07]{4F纵向.jpg}
+    \caption{加入纵向滤波器后的成像}
+\end{figure}
+加入横向和纵向滤波器后仍可以在光屏上观察到倒立等大的像，同时若仔细观察图样，会发现像中分别仅剩下横向和纵向的条纹，与理论预期相符。
+\subsection{假彩色编码}
+\subsubsection{频谱点}
+\begin{figure}[!h]
+    \centering
+    \includegraphics[scale=0.07]{假彩色频谱点.jpg}
+    \caption{频谱点}
+\end{figure}
+观察频谱点图像，发现频谱点的图像在三个方向上成衍射分布，与理论预期相符。
+\subsubsection{加入$\theta$调制滤波器后的成像}
+\begin{figure}[!h]
+    \centering
+    \includegraphics[scale=0.07]{θ调制.jpg}
+    \caption{加入$\theta$调制滤波器后的成像}
+\end{figure}
+可以观察到如上图所示的假彩色图像，其中天空为深蓝色，天安门为红色，草地为黄色。草地不为绿色的原因可能在于自然光谱中绿色范围较小，且与黄色范围相邻，因此滤波器细微的偏差即可导致颜色的变化。
+
+\subsubsection{加入自制滤波器后的成像}
+使用由硬纸片制作而成的蓝色滤光片放置在频谱面上，得到如图所示的效果：
+\begin{figure}[!h]
+    \centering
+    \includegraphics[scale=0.07]{自制滤波.jpg}
+    \caption{加入自制滤波器后的成像}
+\end{figure}
+可以看到图像大部分成蓝色，与预期基本相符。但小部分不为蓝色，可能是由于滤波器的制作不够精细导致的，频谱点不同颜色的光谱很细，难以做到精准透过。
+
+\subsection{光栅与光谱仪器}
+\subsubsection{夫琅和费衍射实验}
+利用两种不同的分划板得到不同的衍射图样，如下图所示：
+\begin{figure}[!h]
+    \centering
+    \subfigure[]{
+        \includegraphics[width=0.3\textwidth]{衍射1.jpg}
+    }
+    \subfigure[]{
+        \includegraphics[width=0.3\textwidth]{衍射2.jpg}
+    }
+    \subfigure[]{
+        \includegraphics[width=0.3\textwidth]{衍射3.jpg}
+    }
+    \subfigure[]{
+        \includegraphics[width=0.3\textwidth]{衍射4.jpg}
+    }
+    \subfigure[]{
+        \includegraphics[width=0.3\textwidth]{衍射5.jpg}
+    }
+    \subfigure[]{
+        \includegraphics[width=0.3\textwidth]{衍射6.jpg}
+    }
+    \subfigure[]{
+        \includegraphics[width=0.3\textwidth]{衍射7.jpg}
+    }
+    \caption{夫琅和费衍射图样}
+    \label{fig:group}
+\end{figure}
+
+\subsubsection{光栅衍射测量光栅常数实验}
+实验中测得零级与一级衍射斑间隔19.5mm，光栅与屏间距81mm，根据实验仪器信息，波长$\lambda=650nm$。经过计算
+得到光栅常数约为$2.78524 \times {10^{{\rm{ - }}3}}mm$
+
+\subsubsection{光栅光谱仪测光谱实验}
+实验中使用手持式光栅光谱仪和SpectraSmart软件分别测量白光和实验中所用激光的单色光光谱，得到如下图所示的光谱：
+\begin{figure}[!h]
+    \centering
+    \includegraphics[scale=0.07]{白光光谱.jpg}
+    \caption{白光光谱图}
+\end{figure}
+\begin{figure}[!h]
+    \centering
+    \includegraphics[scale=0.09]{单色光光谱.jpg}
+    \caption{激光单色光光谱图}
+\end{figure}
+
+\section{讲义思考题}
+\subsection{阿贝成像中，当“缝”与光栅方向夹角45度放置滤波时，会有何效果？}
+\textit{当缝与光栅方向夹角为$45^{\circ}$时，滤波后得到的图像会出现斜向的条纹。具体效果如下图，受限于光线条件和相机像素，图片中难以显示出实际效果。}
+\newpage
+\begin{figure}[!h]
+    \centering
+    \includegraphics[scale=0.1]{阿贝斜向.jpg}
+    \caption{滤波器斜向放置时得到的图像}
+\end{figure}
+\subsection{前面实验中，我们使用低通滤波（仅让0级斑通过）实现了光栅格子信息的消除；如何做个高通滤波
+的例子？应该如何实现和它的效果是什么？ }
+\textit{为了实现高通滤波，我们需要在傅里叶平面上让高次的衍射级次通过，而屏蔽掉零级斑。}
+
+\textit{具体而言，可以在透镜后方的傅里叶平面处插入一个空间滤波器，遮挡住零级衍射的光斑。可以采用小圆形不透明的遮片放在傅里叶平面的中心位置，只允许高次级次的光通过。}
+
+\textit{在高通滤波过程中，由于低频信息被抑制。因此，图像的轮廓和整体结构可能会变得模糊。同时，由于高次衍射包含了图像的高频信息（即图像的边缘和细节），因此在图像经过高通滤波后，细节被突出，特别是图像中包含的锐利边缘和纹理会显得更为清晰。}
+
+\subsection{观察4F系统成像与阿贝成像时单透镜成像的区别是什么？}
+\textit{阿贝成像系统由光栅和单个透镜组成，光通过物体产生的衍射级次在透镜的焦平面上形成频谱分布，随后这些频谱在像面叠加成像。其成像效果依赖于不同衍射级次的组合，具体表现为若仅允许0级光通过，则图像较模糊且缺乏细节（相当于低通滤波）；若阻挡0级斑，仅让高次光通过，则图像呈现边缘和细节增强的效果（高通滤波）。}
+
+\textit{相比之下，4F系统由两片透镜组成，第一片透镜将物体的图像以傅里叶变换的形式投射到中间的傅里叶平面，第二片透镜对傅里叶平面的频谱信息进行逆傅里叶变换以重建图像。在傅里叶平面中，可以通过插入空间滤波器（如高通、低通或带通滤波器）精准控制哪些频率成分通过，因此4F系统具有更高的可控性和灵活性，能够根据需要增强或抑制不同频段的频率信息。成像效果上，4F系统不仅可以保留物体的整体结构（低通滤波），也可以通过滤波显著增强图像的细节或边缘（高通滤波），因此在过滤操控和精细成像方面优于单透镜阿贝成像系统。}
+
+\subsection{假彩色编码实验中使用的天安门城楼光栅本身中的城楼的窗户和门洞都是透光的，但是
+为什么经过所提供的假着色滤波处理后所成的像中这些窗户和门洞是黑色的？有方法验证
+你的解释吗？}
+\textit{窗户和门洞由于是透光区域，形成的衍射级次非常弱甚至近乎于无。因此，它们的频谱强度显著低于周围的非透光区域，经过滤波器后光强在门洞和窗户位置上相互削弱，使得这些区域偏黑。若要点亮门洞，只需自制一个中心透光的滤波器，使得门洞的频谱强度增强即可。，下图所示即为用自制的中心透光滤波器得到的效果。可以看到，天安门的门洞和窗户被点亮。}
+\begin{figure}[!h]
+    \centering
+    \includegraphics[scale=0.08]{假彩色点亮.jpg}
+    \caption{利用中心透光的自制滤波器得到的图像}
+\end{figure}
+
+\subsection{从夫琅和费衍射演示实验得到哪些规律？}
+\textit{在夫琅和费衍射演示实验中，观察了单缝、双缝和多缝衍射，单孔和双孔衍射，以及光栅衍射现象，实验中可以归纳出重要的几个普遍规律。首先，对于单缝衍射，衍射图样主要表现为中央的主极大最亮且最宽，随着衍射角的增大两侧的次极大逐渐减弱，极小点的位置满足公式$\sin \theta = m\frac{\lambda}{a}$。其中 \(\theta\) 为衍射角，\(m\) 为极小点的阶数，\(\lambda\) 为光的波长，\(a\) 为缝宽。缝宽越小，衍射效应越显著，中央亮斑越宽。其次，在双缝衍射中，干涉与衍射效应叠加，结果为具有明显明暗条纹的图样。条纹的间隔由双缝间距 \(d\) 决定，条纹间隔变大时意味着间距 \(d\) 较小，同时，单缝的作用通过包络控制了图样的强度分布，条纹的极小点依旧满足$\sin \theta = m\frac{\lambda}{a}$。多缝衍射系统由于更多的缝数参与，主极大的条纹更加尖锐，而次极大的强度进一步减弱，主极大位置依然由$\sin \theta = m\frac{\lambda}{d}$决定。对于单孔衍射，图样呈现同心圆形结构，中央亮斑明显，双孔衍射则表现为单孔衍射的包络叠加双缝干涉的特点。最后，在光栅衍射现象中，由于存在大量狭缝，衍射图样中主极大更加尖锐集中，主极大位置同样满足$\sin \theta = m\frac{\lambda}{d}$。但光栅衍射具有更高的分辨率和对比度，广泛应用于光谱分析。总的来看，随着狭缝或孔的数量增加，衍射图样中明暗条纹的对比、更高的锐度和主极大的集中性越明显，揭示了光的波动性以及障碍物的几何结构如何通过影响空间频率与光的波长作用，最终决定衍射图样的呈现。}
+\end{document}
