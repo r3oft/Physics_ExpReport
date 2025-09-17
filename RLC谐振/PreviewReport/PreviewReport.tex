@@ -1,0 +1,530 @@
+\documentclass[UTF-8,twoside,cs4size]{ctexart}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{geometry}
+\usepackage{setspace}
+\usepackage{xeCJK}
+\usepackage{ulem}
+\usepackage{pstricks}
+\usepackage{pstricks-add}
+\usepackage{bm}
+\usepackage{mathtools}
+\usepackage{breqn}
+\usepackage{mathrsfs}
+\usepackage{esint}
+\usepackage{textcomp}
+\usepackage{upgreek}
+\usepackage{pifont}
+\usepackage{tikz}
+\usepackage{circuitikz}
+\usepackage{caption}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{pgfplots}
+\usepackage{multirow}
+\usepackage{pgfplotstable}
+\usepackage{mhchem}
+\usepackage{physics} % Add this package for \dt and \dif commands
+\usepackage{cases}
+\usepackage{subfigure}
+
+\graphicspath{{./figure/}}
+
+\setCJKfamilyfont{zhsong}[AutoFakeBold = {5.6}]{STSong}
+\newcommand*{\song}{\CJKfamily{zhsong}}
+
+\geometry{a4paper,left=2cm,right=2cm,top=0.75cm,bottom=2.54cm}
+
+\newcommand{\experiName}{RLC电路的谐振与暂态过程}%实验名称
+\newcommand{\supervisor}{高磊}%指导教师
+\newcommand{\name}{孙奕飞}
+\newcommand{\studentNum}{2023k8009925001}
+\newcommand{\class}{2}%班级
+\newcommand{\group}{06}%组
+\newcommand{\seat}{01}%座位号
+\newcommand{\dateYear}{2024}
+\newcommand{\dateMonth}{10}%月
+\newcommand{\dateDay}{15}%日
+\newcommand{\room}{教709}%地点
+\newcommand{\others}{$\square$}
+
+\ctexset{
+    section={
+        format+=\raggedright\song\large
+    },
+    subsection={
+        name={\quad,.}
+    },
+    subsubsection={
+        name={\qquad,.}
+    }
+}
+
+\begin{document}
+\noindent
+
+\begin{center}
+
+    \textbf{\song \zihao{-2} \ziju{0.5}《基础物理实验》实验报告}
+    
+\end{center}
+
+
+\begin{center}
+    \kaishu \zihao{5}
+    \noindent \emph{实验名称}\underline{\makebox[28em][c]{\experiName}}
+    \emph{指导教师}\underline{\makebox[9em][c]{\supervisor}}\\
+    \emph{姓名}\underline{\makebox[6em][c]{\name}} 
+    \emph{学号}\underline{\makebox[14em][c]{\studentNum}}
+    \emph{分班分组及座号} \underline{\makebox[5em][c]{\class \ -\ \group \ -\ \seat }\emph{号}} \\
+    \emph{实验日期} \underline{\makebox[3em][c]{\dateYear}} \emph{年}
+    \underline{\makebox[2em][c]{\dateMonth}}\emph{月}
+    \underline{\makebox[2em][c]{\dateDay}}\emph{日}
+    \emph{实验地点}\underline{{\makebox[4em][c]\room}}
+    \emph{调课/补课} \underline{\makebox[3em][c]{否}}
+    \emph{成绩评定} \underline{\hspace{8em}}
+    {\noindent}
+    \rule[5pt]{17.7cm}{0.2em}
+\end{center}
+
+\section{实验目的}
+1. 研究 RLC 电路的谐振现象。
+
+2. 了解 RLC 电路的相频特性和幅频特性。
+
+3. 用数字存储示波器观察 RLC 串联电路的暂态过程，理解阻尼振动规律。
+
+\section{实验仪器与用具}
+标准电感，标准电容，100$\Omega $标准电阻，电阻箱，电感箱，电容箱，函数发生器，示波器，
+数字多用表，导线等。
+
+\section{实验原理}
+\subsection{串联谐振}
+\begin{figure}[!h]
+    \centering
+    \begin{circuitikz}
+        \draw (6,0)
+        to[sV,a=$ \tilde u_s $] (0,0)
+        to[short] (0,-3)
+        to[european resistor,l=$ R $] (2,-3)
+        to[american inductor,l=$ L $] (4,-3)
+        to[C,l=$ C $] (6,-3)
+        to[short] (6,0);
+        \draw[->] (5,0)--(5.1,0)node[above]{$ \tilde i $};
+        \draw[<-] (0.1,-1.5)--(2.7,-1.5);
+        \draw[->] (3.3,-1.5)--(5.9,-1.5);
+        \node at(3,-1.5) {$ \tilde u $};
+        \draw (6,-3.5)--(6,-4.5);
+        \draw (4,-3.5)--(4,-4.5);
+        \draw (2,-3.5)--(2,-4.5);
+        \draw (0,-3.5)--(0,-4.5);
+        \draw[<-] (0.05,-4)--(0.7,-4);
+        \draw[<-] (2.05,-4)--(2.7,-4);
+        \draw[<-] (4.05,-4)--(4.7,-4);
+        \draw[->] (1.3,-4)--(1.95,-4);
+        \draw[->] (3.3,-4)--(3.95,-4);
+        \draw[->] (5.3,-4)--(5.95,-4);
+        \node at(1,-4) {$ \tilde u_R $};
+        \node at(3,-4) {$ \tilde u_L $};
+        \node at(5,-4) {$ \tilde u_C $};
+    \end{circuitikz}
+    \caption{$ RLC $串联谐振电路}
+\end{figure}
+RLC 串联电路如图 1 所示。其总阻抗$\left\lvert Z\right\rvert $、电压u与电流i之间的相位差$\varphi $、电流i分别为
+\begin{equation}
+    \left\lvert Z\right\rvert=\sqrt{R^2+(\omega L-\frac{1}{\omega C} )^2}  
+\end{equation}
+\begin{equation}
+    \varphi =\arctan \frac{\omega L-\frac{1}{\omega C} }{R} 
+\end{equation}
+\begin{equation}
+   i= \frac{u}{\sqrt{R^2+(\omega L-\frac{1}{\omega C} )} } 
+\end{equation}
+式中$\omega =2\pi f$为角频率，$\left\lvert Z\right\rvert $、$\varphi$ 、$i$都是$f$的函数，因而当电路中其他元件参量确定的情况下，电路特性将完全取决于频率$f$的大小
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=\linewidth, height=0.5\textheight, keepaspectratio]{fig1.png}
+    \caption{串联谐振电路的阻抗、相位差、电流随频率的变化曲线}
+\end{figure}
+图 2（a）、（b）、（c）分别为 RLC 串联电路的阻抗、相位差、电流随频率的变化曲线。其中图 2（b）$\varphi -f$曲线称为相频特性曲线；图 2（c）
+$i-f$曲线称为幅频特性曲线，它表示在总电压u保持不变的条件下i随f的变化曲线。相频特性曲线和幅频特性曲线有时统称为频率响应特
+性曲线。
+
+由曲线图可以看出，存在一个特殊的频率$f_0$，特点为：
+（1）当$f<f_0$时，$\varphi <0$,电流的相位超前于电压，整个电路呈电容性，且随f降低，$\varphi$ 趋近于-$\frac{\pi }{2}$；而当$f>f_0$时，$\varphi >0$，电流的相位落后于电压，整个电路呈电感性，且随
+f升高，$\varphi$ 趋近于$\frac{\pi }{2}$
+（2）随f偏离$f_0$越远，阻抗越大，而电流越小。
+（3）当$\omega L-\frac{1}{\omega C}$，即
+\begin{equation}
+    \omega _0=\frac{1}{\sqrt{LC} } 或 f_0=\frac{1}{2\pi \sqrt{LC} }
+\end{equation}
+$\varphi  = 0$，电压与电流同相位，整个电路呈纯电阻性，总阻抗达到极小值$Z_0=R$，而总电流达到极大值$i_m=\frac{u}{R}$。这种特殊的状态称为串联谐振，此时角频率
+$\omega _0$称为谐振角频率。在$f_0$处，$i − f$曲线有明显尖锐的峰显示其谐振状态，因此，有时称它为谐振曲线。谐振时，有
+\begin{equation}
+    u_L=i_m\left\lvert Z_L\right\rvert =\frac{{\omega _0}Lu}{R},\frac{u_L}{u}=\frac{{\omega _0}L}{R}=\frac{1}{R}*\sqrt{\frac{L}{C}}
+\end{equation}
+而
+\begin{equation}
+    u_C=i_m\left\lvert Z_C\right\rvert =\frac{u}{RC{\omega _0}},\frac{u_C}{u}=\frac{1}{RC{\omega _0}}=\frac{1}{R}*\sqrt{\frac{L}{C}}
+\end{equation}
+令
+\begin{equation}
+    Q=\frac{u_C}{u}=\frac{u_L}{u}=\frac{{\omega _0}L}{R}=\frac{1}{RC{\omega _0}}
+\end{equation}
+Q称为谐振电路的品质因数，简称Q值。它是由电路的固有特性决定的，是标志和衡量谐振电路性能优劣的重要的参量。
+
+\subsection{并联谐振}
+\begin{figure}[!h]
+    \centering
+    \begin{circuitikz}
+        \draw (6,0)
+        to[sV,a=$ \tilde u_s $] (0,0)
+        to[short] (0,-1.5)
+        to[european resistor,l=$ R' $,-*] (2,-1.5)
+        to[european resistor,l=$ R $] (4,-1.5)
+        to[american inductor,l=$ L $,-*] (6,-1.5)
+        to[short,-.] (6,0);
+        \draw (2,-1.5)
+        to[short] (2,-3)
+        to[C,l=$ C $] (6,-3)
+        to[short] (6,-1.5);
+        
+        \draw[->] (5,0)--(5.1,0)node[above]{$ \tilde i $};
+        \draw[<-] (5.7,-1.5)node[above]{$ \tilde i_L $}--(5.8,-1.5);
+        \draw[<-] (5.5,-3)node[above]{$ \tilde i_C $}--(5.6,-3);
+        
+        \draw (0,-3.5)--(0,-4.5);
+        \draw (2,-3.5)--(2,-4.5);
+        \draw (6,-3.5)--(6,-4.5);
+        \draw[<-] (0.05,-4)--(0.7,-4);
+        \draw[->] (1.3,-4)--(1.95,-4);
+        \node at(1,-4) {$ \tilde u_{R'} $};
+        \draw[<-] (2.05,-4)--(3.7,-4);
+        \draw[->] (4.3,-4)--(5.95,-4);
+        \node at(4,-4) {$ \tilde u $};
+    \end{circuitikz}
+    \caption{$ RLC $并联谐振电路}
+\end{figure}
+如图 3 所示电路，其总阻抗$\left\lvert Z_P\right\rvert$、电压u与电流i之间的相位差$\varphi $、电压u（或电流i）分别为
+\begin{equation}
+    \left\lvert Z_P\right\rvert=\sqrt{\frac{R^2+(\omega L)^2}{(1-{\omega }^2LC)^2}+(\omega CR)^2} 
+\end{equation}
+\begin{equation}
+    \arctan {\frac{\omega L-\omega C[R^2+(\omega L)^2]}{R}}    
+\end{equation}
+\begin{equation}
+    u-i\left\lvert Z_P\right\rvert =\frac{u_R}{u}\left\lvert Z_P\right\rvert 
+\end{equation}
+显然，它们都是频率的函数。当$\varphi $=0 时，电流和电压同相位，整个电路呈纯电阻性，即发生谐振。由式（8）求得并联谐振的角频率$\omega _p$
+为
+\begin{equation}
+    \omega _p=2\pi f_p=\sqrt{\frac{1}{LC}-(\frac{R}{L})^2} =\omega _0\sqrt{1-\frac{1}{Q^2}} 
+\end{equation}
+式中$\omega _0=2\pi f_0=\frac{1}{LC},Q=\frac{\omega _0L}{R}=\frac{1}{R}\sqrt{\frac{L}{C}}$,可见，并联谐振频率$f_p$与$f_0$稍有不同，
+当Q >> 1时，$\omega _p\approx \omega _0$, $f_P\approx f_0$。
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=\linewidth, height=0.5\textheight, keepaspectratio]{fig2.png}
+    \caption{并联谐振电路的阻抗、相位差、电流随频率的变化曲线}
+\end{figure}
+图 4（a）、（b）、（c）分别为 RLC 并联电路的阻抗、相位差、电流或电压随频率的变化曲线。\\
+由图可知：1.当$ \varphi=0 $时，总阻抗呈纯电阻性，可求得其并联谐振的角频率$ \omega_p $与频率$ f_p $为
+	\[\omega_p=\sqrt{\frac{1}{LC}-\left(\frac RL\right)^2}=\omega_0\sqrt{1-\frac{1}{Q^2}},\quad f_p=\frac{1}{2\pi}\sqrt{\frac{1}{LC}-\left(\frac RL\right)^2}\]
+	即并联谐振频率$ f_p $与串联谐振频率$ f_0 $稍有不同，当$ Q\gg 1 $时，$ \omega_p\approx\omega_0 $，$ f_p\approx f_0 $。
+	
+	2.当$ f<f_p $时，$ \varphi>0 $，电流相位落后于电压，整个电路呈电感性。
+	
+	3.当$ f>f_p $时，$ \varphi<0 $，电流相位超前于电压，整个电路呈电容性。
+	
+	在谐振频率两侧区域，并联电路的电抗特性与串联电路相反。在$ f=f_p' $处总阻抗达到极大值，总电流达到极小值。而在$ f_p' $两侧，随$ f $偏离$ f_p' $越远，阻抗越小，电流越大。
+	
+	与串联谐振类似，可用品质因数
+	\[Q_1=\frac{\omega_0L}{R}=\frac{1}{R\omega_0C},\quad Q_2=\frac{i_C}{i}\approx\frac{i_L}{i},\quad Q_3=\frac{f_0}{\Delta f}\]
+	来标志并联谐振电路的性能优劣，有时也称并联谐振为电流谐振。
+
+    \subsection{ RLC 电路的暂态过程}
+\begin{figure}[!h]
+    \centering
+    \begin{circuitikz}
+        \draw (0,2)
+        to[battery1,a=$ E $] (0,0)
+        to[short,-*] (1.5,0)
+        to[short] (2,0)
+        to[american inductor,a=$ L $] (5,0)
+        to[C,l=$ C $] (5,2)
+        to[european resistor,a=$ R $,-.] (2,2);
+        \draw[thick] (2,2)node[above left]{$ S $}--(1.3,1.6);
+        \draw (1.5,0)
+        to[short] (1.5,1.6)node[right]{2};
+        \draw (0,2)
+        to[short,.-] (1.3,2)node[above]{1};
+        \draw (5.5,0)--(6.5,0);
+        \draw (5.5,2)--(6.5,2);
+        \draw[<-] (6,0.05)--(6,0.7);
+        \draw[->] (6,1.3)--(6,1.95);
+        \node at(6,1) {$ u_C $};
+    \end{circuitikz}
+    \caption{$ RLC $串联振荡电路}
+\end{figure}
+暂态过程电路如图 5。先观察放电过程，即开关 S 先合向“1”使电容充电至 E，然后把 S 倒向“2”，电容就在闭合的
+RLC 电路中放电。在放电过程中，不难列出电路方程为：
+\begin{equation}
+    L\frac{di}{dt}+R_i+u_C=0
+\end{equation}
+此时电容存储的电荷量为 $q = Cu_c$，那么电路中的电流为
+\begin{equation}
+    i = \frac{dq}{dt} = C\frac{du_C}{dt}
+\end{equation}
+将其代入电路常微分方程即得到关于$ u_C $的二阶齐次常微分方程
+\begin{equation}
+	LC \frac{d^2u_C}{dt^2} + RC \frac{du_C}{dt}+u_C=0
+\end{equation}
+	考虑初始条件即可得到方程组：
+    \begin{align}
+        LC\frac{d^2u_C}{dt^2} + RC\frac{du_C}{dt} + u_C = E\\
+        u_C = 0 (t = 0)\\
+        \frac{du_C}{dt} = 0 (t = 0)
+    \end{align}
+	引入阻尼系数$ \zeta=\frac R2\sqrt{\frac CL} $，则可将方程组的解分为三种情况：
+	
+	1.当$ \zeta<1 $，即$ R^2<\frac{4L}{C} $时，阻尼不足，上述方程组的解为
+    \begin{equation}
+        u_C=\sqrt{\frac{4L}{4L-R^2C}}Ee^{-t/\tau}\cos(\omega t+\varphi)
+    \end{equation}
+	其中时间常量$ \tau=\frac{2L}{R} $，衰减振动的角频率为$ \omega=\frac{1}{\sqrt{LC}}\sqrt{1-\frac{R^2C}{4L}} $。$ \tau $的大小决定了振幅衰减的快慢，$ \tau $越小，振幅衰减越迅速。
+	
+	若$ R^2\ll\frac{4L}{C} $，振幅的衰减很缓慢，此时
+	\begin{equation}
+        \omega\approx\frac{1}{\sqrt{LC}}=\omega_0
+    \end{equation}
+	近似为$ LC $电路自由振动，$ \omega_0 $为$ R=0 $时$ LC $回路的固有频率。衰减振动的周期为
+	\begin{equation}
+        T=\frac{2\pi}{\omega}\approx2\pi\sqrt{LC}
+    \end{equation}
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=0.8\linewidth, keepaspectratio]{fig3.png}
+    \caption{$ RLC $暂态过程中的三种阻尼曲线}
+\end{figure}
+2.当$ \zeta>1 $，即$ R^2>\frac{4L}{C} $时，对应过阻尼状态，方程组的解为
+\begin{equation}
+    u_C=\sqrt{\frac{4L}{R^2C-4L}}Ee^{-\alpha t}\sinh(\beta t+\varphi)
+\end{equation}
+	其中$ \alpha=\frac{R}{2L},\;\beta=\frac{1}{\sqrt{LC}}\sqrt{\frac{R^2C}{4L}-1} $。此时若固定$ L,\;C $，振幅将缓慢地衰减为0。
+	
+	3.当$ \zeta=1 $，即$ R^2=\frac{4L}{C} $时，对应临界阻尼状态，方程组的解为
+    \begin{equation}
+        u_C=\left(1+\frac t\tau\right)Ee^{-t/\tau}
+    \end{equation}
+	其中$ \tau=\frac{2L}{R} $，其为从过阻尼到阻尼振动过渡的分界点。
+	
+	对于充电过程，考虑初始条件，电路方程组变为
+    \begin{align}
+        LC\frac{d^2u_C}{dt^2} + RC\frac{du_C}{dt} + u_C = E\\
+        u_C = 0 (t = 0)\\
+        \frac{du_C}{dt} = 0 (t = 0)
+    \end{align}
+
+	当$ R^2<\frac{4L}{C} $时，方程组的解为
+    \begin{equation}
+        u_C=E\left[1-\sqrt{\frac{4L}{4L-R^2C}}e^{-t/\tau}\cos(\omega t+\varphi)\right]
+    \end{equation}
+	
+	当$ R^2>\frac{4L}{C} $时，方程组的解为
+    \begin{equation}
+        u_C=E\left[1-\sqrt{\frac{4L}{R^2C-4L}}e^{-\alpha t}\sinh(\beta t+\varphi)\right]
+    \end{equation}
+	
+	当$ R^2=\frac{4L}{C} $时，方程组的解为
+    \begin{equation}
+        u_C=E\left[1-\left(1+\frac t\tau\right)e^{-t/\tau}\right]
+    \end{equation}
+	
+	可以看出，充电过程与放电过程十分类似，只是最后趋向的平衡位置不同。
+
+\section{实验内容}
+    \subsection{测量RLC串联电路的相频特性和幅频特性曲线}
+    参考讲义搭建测量电路，调节实验仪器使得$ u_{pp}=2.0\,\mathrm V,\;L=0.1\,\mathrm H,\;C=0.05\,\mu\mathrm F,\;R=100\,\Omega $时，利用数字示波器的CH1、CH2通道分别观测$ RLC $串联电路的总电压$ u $和电阻两端电压$ u_R $。
+    实验时注意限制总电压峰值不超过$ 3.0\,\mathrm V $（或有效值不超过0.1\,V），防止串联谐振时电容和电感两端产生有危险的高电压。 \\
+	
+	首先调谐振，改变函数发生器的输出频率，并通过CH1与CH2相位差为0，CH2幅度最大来判断是否到达谐振，记录谐振时的频率$ f_0 $，并利用式(7)计算$Q$值.
+	
+	接下来，保持总电压$u_pp=2.0V$不变，用示波器测量电压、电流间相位差$\varphi$以及相应的$u_R$。
+    选择相位差约$0^\circ {\rm{,}} \pm 15^\circ {\rm{,}} \pm 30^\circ {\rm{,}} \pm 45^\circ {\rm{,}} \pm 60^\circ {\rm{,}} \pm 72^\circ {\rm{,}} \pm 80^\circ $
+    所对应的频率进行测量。参考频率（单位kHz）：1.88、2.00、2.08、2.15、2.19、2.22、2.24、2.25、2.26、2.275、
+    2.30、2.36、2.43、2.62、3.18。利用得到的数据作RLC串联电路的$\varphi-f$曲线和$i-f$曲线。并利用
+    $Q=\frac{f_0}{\Delta f}$估算出Q值。
+	
+	\subsection{测量RLC并联电路的相频特性和幅频特性曲线}
+    参考讲义搭建测量电路，调节实验仪器使得$ u_{pp}=2.0\,\mathrm V,\;L=0.1\,\mathrm H,\;C=0.05\,\mu\mathrm F,\;R'=5000\,\Omega $时，
+    利用数字示波器的CH1、CH2通道分别观测$ RLC $并联电路的总电压$ u_总 $和$R'$两端电压$ u_{R'} $。两通道测量电压相减CH1-CH2就是并联部分电压$u$。\\
+    改变函数发生器的输出频率，观测并联部分的电压$u(CH1-CH2)$与总电流(CH2)的幅度和相位
+    的变化，找到谐振频率$f_p$
+    测相频特性曲线和幅频特性曲线：固定总电压$(u+u_{R'})$的峰值2.0V保持不变，测量并联
+    部分电压$u(CH1-CH2)$与总电流(CH2)的相位差以及二者的幅度值。参考频率（单位kHz）:
+    2.05、2.15、2.20、2.231、2.24、2.247、2.25、2.253、2.256、2.265、2.275、2.32、2.40、2.60。
+    作RLC并联电路的$\varphi-f$曲线和$u-f、i-f$曲线。
+    
+    \subsection{观测RLC串联电路的暂态过程}
+    参考讲义搭建测量电路，调节实验仪器使得$L=0.1H,C=0.2\mu F$。为便于测量相位差，需将方波的低电平调整至与示波器的扫描基线一致。
+    由函数发生器产生方波，将函数发生器各参数设为：频率50Hz，电压峰峰值$u_pp=2.0V$，偏移
+    1V。示波器CH1通道用来测量总电压，CH2用来测量电容两端电压$u_C$。为了测得正确的电压，示波器的两个通道必须共地。
+
+    接下来，调节$R=0\Omega$，测量$u_C$波形。
+    然后，调节R测得临界电阻，并与理论值比较。
+    最后，分别记录$R=2k\Omega,20k\Omega$时的波形。函数发生器频率分别选为$250Hz(R=2k\Omega)$和
+    $20Hz(R=20k\Omega)$
+
+\section{实验结果与数据处理}
+    \subsection{测量RLC串联电路的相频特性和幅频特性曲线}
+        \subsubsection{测量谐振频率$f_0$和品质因子$Q$}
+            根据讲义所提供的参考频率对函数发生器的输出频率进行调节，发现当$ f=2.255\,\mathrm{kHz} $时，路端电压与电阻$ R $两端电压相位差趋近为0，此时即达到谐振状态，用万用电表测得
+            \[u=0.447\,\mathrm V,\quad u_C=6.81\,\mathrm{V},\quad u_L=6.91\,\mathrm V\]
+            根据公式(7)，可计算得到电路的品质因数为
+            \[Q_1=\frac{u_C}{u}=15.234,\quad Q_2=\frac{u_L}{u}=15.549\]
+            而根据公式$Q = \frac{1}{R}\sqrt{\frac{L}{C}}$可计算出Q的理论标准值为$Q = 14.412$。
+        \subsubsection{测量相频特性曲线和幅频特性曲线}
+            根据讲义所提供的参考频率对函数发生器的输出频率进行调节，测得电压、电流间相位差$\varphi$以及相应的$u_R$如下表所示：\\
+            \begin{table}[!h]
+                \centering
+                \begin{tabular}{|l|l|l|l|l|}
+                \hline
+                    f/kHz & U/V & $(CH1-CH2) \varphi/^{\circ}$ & $U_R/V$ & I/mA \\ \hline
+                    1.88 & 2.00 & -74.44 & 0.348 & 3.48 \\ \hline
+                    2 & 2.00 & -70.00 & 0.535 & 5.35 \\ \hline
+                    2.08 & 2.00 & -61.50 & 0.748 & 7.48 \\ \hline
+                    2.15 & 2.00 & -48.10 & 1.06 & 10.6 \\ \hline
+                    2.19 & 2.00 & -33.16 & 1.28 & 12.8 \\ \hline
+                    2.22 & 2.00 & -20.89 & 1.45 & 14.5 \\ \hline
+                    2.24 & 2.00 & -8.036 & 1.50 & 15.0 \\ \hline
+                    2.25 & 2.00 & -1.622 & 1.50 & 15.0 \\ \hline
+                    2.26 & 2.00 & 1.636 & 1.50 & 15.0 \\ \hline
+                    2.275 & 2.00 & 8.182 & 1.13 & 11.3 \\ \hline
+                    2.3 & 2.00 & 21.67 & 1.06 & 10.6 \\ \hline
+                    2.36 & 2.00 & 42.45 & 0.848 & 8.48 \\ \hline
+                    2.43 & 2.00 & 50.68 & 0.648 & 6.48 \\ \hline
+                    2.62 & 2.00 & 73.12 & 0.358 & 3.58 \\ \hline
+                    3.18 & 2.00 & 76.15 & 0.161 & 1.61 \\ \hline
+                \end{tabular}
+            \end{table}
+        
+            根据数据表中的内容可绘制出如下图像：
+        \begin{figure}[!h]
+            \centering
+            \includegraphics*[scale=0.6]{output1.png}
+            \caption{$ RLC $串联电路相频曲线}
+        \end{figure}
+        \subsubsection{结果讨论}
+        从由实验数据点绘制得到的相频特性曲线可以看出，相位差随着频率的增加递增，在谐振频率附近变化
+        率较大。受限于有限的频率覆盖范围，相位并未到达$\pm90^{\circ}$，不过仍能看出，在相位接近$\pm90^{\circ}$时，变化率逐渐趋于零，近似为平行 x 轴的直线。因此，在实验误差允许范围内，与
+        理论标准图像基本一致。\\
+        而幅频特性曲线中，电流随频率增加先增大后减小，并在谐振频率处产生一个极大值，在实验误差允
+        许范围内，与理论标准图像基本一致。
+    
+        谐振频率约为2.25KHz，计算出的Q值为11.93，所做的相频特性曲线与幅频特性曲线都与实验原理中的理论图像符合情况较好，说明实验完成情况较好。
+    \subsection{测量RLC并联电路的相频特性和幅频特性曲线}
+        \subsubsection{测量谐振频率$f_p$和品质因子$Q$}
+            根据讲义所提供的参考频率对函数发生器的输出频率进行调节，发现当$f = 2.253kHz$时，并联部分的电压$u$与总电流相位相同，此时即达到谐振状态，$f_p = f$。\\
+        \subsubsection{测量RLC并联电路的相频特性和幅频特性曲线}
+            根据讲义所提供的参考频率对函数发生器的输出频率进行调节，测得相应的实验数据如下表所示：
+            \begin{table}[!h]
+                \centering
+                \begin{tabular}{|l|l|l|l|l|l|l|}
+                \hline
+                    f/kHz & U/V & $t/\mu s$ & $\varphi^{\circ}$ & U/V & $U_R/mV$ & $I_max/mA$ \\ \hline
+                    2.050 & 2.00 & 122 & 88.02  & 1.55 & 920  & 0.1840  \\ \hline
+                    2.150 & 2.00 & 156 & 79.74  & 1.75 & 484  & 0.0960  \\ \hline
+                    2.200 & 2.00 & 118 & 64.26  & 1.80 & 269 & 0.0538  \\ \hline
+                    2.231 & 2.00 & 157 & 47.34  & 1.84 & 167  & 0.0334  \\ \hline
+                    2.240 & 2.00 & 173 & 30.06  & 1.80 & 130  & 0.0260  \\ \hline
+                    2.247 & 2.00 & 193 & 9.18 & 1.79 & 113  & 0.0226  \\ \hline
+                    2.250 & 2.00 & 198 & -1.98 & 1.77 & 107  & 0.0214  \\ \hline
+                    2.253 & 2.00 & 221 & -9.36  & 1.85 & 107  & 0.0214  \\ \hline
+                    2.256 & 2.00 & 224 & -16.74  & 1.83 & 111  & 0.0222  \\ \hline
+                    2.265 & 2.00 & 259 & -38.70  & 1.81 & 129  & 0.0258  \\ \hline
+                    2.275 & 2.00 & 271 & -50.04  & 1.79 & 164  & 0.0328  \\ \hline
+                    2.320 & 2.00 & 295 & -67.68  & 1.78 & 388  & 0.0776  \\ \hline
+                    2.400 & 2.00 & 299 & -81.72  & 1.66 & 728 & 0.01456 \\ \hline
+                    2.600 & 2.00 & 280 & -90.18  & 1.32 & 1340 & 0.268 \\ \hline
+                \end{tabular}
+            \end{table}
+
+            根据数据表中的内容可绘制出如下图像：
+            \begin{figure}[!h]
+                \centering
+                \includegraphics*[scale=0.5]{output2.png}
+                \caption{$ RLC $并联电路相频曲线}
+            \end{figure}
+            \begin{figure}[!h]
+                \centering
+                \includegraphics*[scale=0.5]{output3.png}
+                \caption{$ RLC $并联电路$u-f$曲线}
+            \end{figure}
+            \begin{figure}[!h]
+                \centering
+                \includegraphics*[scale=0.5]{output4.png}
+                \caption{$ RLC $并联电路$i-f$曲线}
+            \end{figure}
+            \newpage
+            \subsubsection{结果讨论}
+            从由实验数据绘制得到相频特性曲线可以看出
+            随着频率的增加，相位差由正到负逐渐递减，在 90°附近现出逐渐平行于 x 轴的趋势；
+            同时电压先上升再下降，电流现下降再上升，二者在同一频率出分别到达极大值点和极小值点（注：该频率不严格等于谐振频率，但十分接近谐振频率）并
+            比较理论预期图像可知，在实验误差的允许范围内，上述实验结果较好地符合了理论预期
+        
+            然而，相频特性曲线和幅频特性曲线仍然存在一定的误差，
+            具体表现为频曲线并未出现相位从0增长到$\frac{\pi}{2}$的一段，而$u-f$和$i-f$曲线则比理论图像更加尖锐，在尖端点出数据点较为密集.误差产生可能的原因如下：
+        
+            在谐振点附近频率选择的步长较小，但在远离谐振点的区域，步长选择较大。RLC并联电路的相频特性在谐振点附近变化非常剧烈，而在远离谐振频率的地方，变化较平缓。因此频率步进的不均匀，尤其是在与理论状态对比大幅不足的情况下，在某些频率点可能错过了重要的相位信息。
+        
+            同时，在测量$RLC$并联电路的相位差时，不能直接从示波器的 CH1 或 CH2 的曲线中读取有关电压
+            的变化曲线，而必须通过光标操作用肉眼观测，并将这两个通道相减，读数误差较大，所以导致幅频曲线误差较大。
+        
+            同时，电路布线、连接点、仪器探头等因素都可能引入额外的寄生电感和电容，这些寄生效应可能对谐振频率产生扭曲，使得实际测量值与理论计算产生显著差异。
+    
+    \subsection{观测RLC串联电路的暂态过程}
+        \subsubsection{$R=0\Omega$时测量$u_C$波形}
+        \begin{figure}[!h]
+            \centering
+            \includegraphics[scale=0.1]{fig4.jpg}
+            \caption{欠阻尼振动状态波形}
+        \end{figure}
+        \subsubsection{调节$R$测得临界电阻，并与理论值比较}
+        理论值$R_C=2\sqrt{\frac{L}{C}}=1414\Omega$，调节$R$约为$1290\Omega$时，振动波形进入临界状态。  \\
+        该数值与理论值存在一定差异。猜测原因为对临界状态的曲线判断存在视觉误差，导致测量值为电路实际尚未进入临界状态的电阻值。
+        \subsubsection{记录$R=2k\Omega,20k\Omega$时的$u_C$波形}
+        \begin{figure}[!h]
+            \centering
+            \includegraphics[scale=0.1]{fig5.jpg}
+            \caption{$R=2k\Omega$, $f=250kHz$时的过阻尼振动波形}
+        \end{figure}
+        \begin{figure}[!h]
+            \centering
+            \includegraphics[scale=0.1]{fig6.jpg}
+            \caption{$R=20k\Omega$, $f=20kHz$时的过阻尼振动波形}
+        \end{figure}
+        \subsubsection{结果讨论}
+        将实验测得的三个图像与理论标准图像进行比较，在实验误差允许范围内，实验测量结果与理论预期结果吻合较好。\\
+        测量临界点组时与理论值有较大误差，可能是由于视觉误差导致的。\\
+
+\section{实验总结}
+\subsection{有关实验操作细节与技巧}
+（1）在用示波器测量电压时应注意测量通道需要共地，否则将得到错误的测量结果。\par
+（2）由于函数发生器内阻的原因，测量时要不断调节函数发生器产生的输入信号的幅度，以维持外电路总电压峰峰
+值为 2V 左右，使得我们的实验符合理论要求。\par
+
+\subsection{有关数据记录与处理的细节}
+（1）电压的读取不要峰峰选择值，而是读取幅度值，原因在于峰峰值是未经过处理的信
+号，其中噪音成分含量过多，使得测量结果包含较大的误差。因此，采用幅度的实验数据会更加可靠。\par
+（2）测量并联谐振时，只能用光标来测量时间差进而计算相位差，但曲线与 x 轴交点有宽度，使得交点的准确位置难以判断。为了提高测量精度，可以放大图像，并统一把光标对准宽度中心点的位置，这样能
+够最大限度的消除由于主观估计带来的误差。
+
+
+
+\subsection{反思}
+（1）实验前还应加强预习，深化对实验原理的理解，这样在做实验时才能做到心中有数。\par
+（2）学会使用python或mathematica处理实验数据。\par
+（3）实验后认真分析误差来源，在下次实验时改进操作，逐渐减少误差。\par
+
+\end{document}

@@ -1,0 +1,51 @@
+\documentclass[border=2pt]{standalone}
+\usepackage[american,siunitx]{circuitikz}
+\begin{document}
+\begin{circuitikz}[american voltages]
+
+% 输入电压 Vin (+15V)
+\draw
+(0,3) to[battery1,l=$V_{in}$ (+15V)] (0,0);
+
+% 电感 L1 (2mH)
+\draw
+(0,3) to[L,l=L1\\($2\,\mathrm{mH}$)] (2,3);
+
+% MOSFET M1 (2N7000)
+\draw
+(2,3) node[circ]{} to[short] (2.5,3)
+(2.5,3) to[nmos,l=M1\\(2N7000),name=M1] (2.5,0);
+
+% MOSFET 的栅极驱动信号
+\draw
+(M1.gate) to[open, o-o, v^=$V_{\text{GS}}$ (PWM)] ++(-1.5,0);
+
+% 二极管 D1 (1N4001)
+\draw
+(2.5,3) to[short] (4,3)
+(4,3) to[D,l=D1\\(1N4001)] (4,5)
+(4,5) to[short] (6,5);
+
+% 输出滤波电容 C1 (220μF)
+\draw
+(6,5) to[C,l=C1\\($220\,\mu\mathrm{F}$)] (6,0);
+
+% 负载电阻 R$_{\text{load}}$ (2kΩ)
+\draw
+(6,5) to[R,l=R$_{\text{load}}$\\($2\,k\Omega$)] (8,5)
+(8,5) to[short] (8,0);
+
+% 输出电压 Vo (3.3V)
+\draw
+(6,5) to[open,v^=$V_o$ (3.3V)] (6,0);
+
+% 地（GND）连接
+\draw
+(0,0) node[ground]{}
+(2.5,0) node[ground]{}
+(4,0) node[ground]{}
+(6,0) node[ground]{}
+(8,0) node[ground]{};
+
+\end{circuitikz}
+\end{document}
