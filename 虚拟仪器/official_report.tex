@@ -1,0 +1,571 @@
+\documentclass[UTF-8,twoside,cs4size]{ctexart}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{geometry}
+\usepackage{setspace}
+\usepackage{xeCJK}
+\usepackage{ulem}
+\usepackage{pstricks}
+\usepackage{pstricks-add}
+\usepackage{bm}
+\usepackage{mathtools}
+\usepackage{breqn}
+\usepackage{mathrsfs}
+\usepackage{esint}
+\usepackage{textcomp}
+\usepackage{upgreek}
+\usepackage{pifont}
+\usepackage{tikz}
+\usepackage{circuitikz}
+\usepackage{caption}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{pgfplots}
+\usepackage{multirow}
+\usepackage{pgfplotstable}
+\usepackage{mhchem}
+\usepackage{physics} % Add this package for \dt and \dif commands
+\usepackage{cases}
+\usepackage{subfigure}
+\usepackage{enumerate}
+\usepackage{minipage-marginpar}
+
+\graphicspath{{./figure/}}
+
+\setCJKfamilyfont{zhsong}[AutoFakeBold = {5.6}]{STSong}
+\newcommand*{\song}{\CJKfamily{zhsong}}
+
+\geometry{a4paper,left=2cm,right=2cm,top=0.75cm,bottom=2.54cm}
+
+\newcommand{\experiName}{虚拟仪器}%实验名称
+\newcommand{\supervisor}{郭思明}%指导教师
+\newcommand{\name}{孙奕飞}
+\newcommand{\studentNum}{2023k8009925001}
+\newcommand{\class}{2}%班级
+\newcommand{\group}{06}%组
+\newcommand{\seat}{01}%座位号
+\newcommand{\dateYear}{2024}
+\newcommand{\dateMonth}{10}%月
+\newcommand{\dateDay}{22}%日
+\newcommand{\room}{教702}%地点
+\newcommand{\others}{$\square$}
+
+\ctexset{
+    section={
+        format+=\raggedright\song\large
+    },
+    subsection={
+        name={\quad,.}
+    },
+    subsubsection={
+        name={\qquad,.}
+    }
+}
+
+\begin{document}
+\noindent
+
+\begin{center}
+
+    \textbf{\song \zihao{-2} \ziju{0.5}《基础物理实验》实验报告}
+    
+\end{center}
+
+
+\begin{center}
+    \kaishu \zihao{5}
+    \noindent \emph{实验名称}\underline{\makebox[28em][c]{\experiName}}
+    \emph{指导教师}\underline{\makebox[9em][c]{\supervisor}}\\
+    \emph{姓名}\underline{\makebox[6em][c]{\name}} 
+    \emph{学号}\underline{\makebox[14em][c]{\studentNum}}
+    \emph{分班分组及座号} \underline{\makebox[5em][c]{\class \ -\ \group \ -\ \seat }\emph{号}} \\
+    \emph{实验日期} \underline{\makebox[3em][c]{\dateYear}} \emph{年}
+    \underline{\makebox[2em][c]{\dateMonth}}\emph{月}
+    \underline{\makebox[2em][c]{\dateDay}}\emph{日}
+    \emph{实验地点}\underline{{\makebox[4em][c]\room}}
+    \emph{调课/补课} \underline{\makebox[3em][c]{否}}
+    \emph{成绩评定} \underline{\hspace{8em}}
+    {\noindent}
+    \rule[5pt]{17.7cm}{0.2em}
+\end{center}
+
+\section{实验目的}
+    1.了解虚拟仪器的基本概念；\par
+    2.了解图形化编程语言LabVIEW，学习简单的LabVIEW编程；\par 
+    3.完成伏安法测电阻的虚拟仪器设计\par
+
+\section{实验仪器}
+    计算机（含操作系统），LabVIEW 2014，NI ELVIS II$ ^+ $，导线若干，元件盒一个（包括$ 100\,\Omega $标准电阻一个，待测电阻$ 10\,\mathrm{k\Omega} $和$ 100\,\Omega $各一个，发光二极管一个，以及热电偶等元件。
+
+\section{实验原理}
+    \subsection{虚拟仪器的硬件}
+    本实验使用的硬件平台是个人电脑（PC机），美国国家仪器公司（National Instruments）的教学实验室虚拟仪器套件（Educational Laboratory Virtual Instrumentation Suite）II+（缩写为NI ELVISⅡ+）和自带的原型板。\par
+虚拟仪器综合实验平台ELVIS Ⅱ+，集成8路差分输入（或16路单端输入）模拟数据采集通道、24路数字I/O通道，以及多款常用的仪器（包括示波器、数字万用表、函数发生器、动态信号分析仪、
+二线电流电压分析仪、三线电流电压分析仪、阻抗分析仪、VPS电源等）。平台通过USB连接PC。虚拟仪器综合实验平台是开源的，可以在LabVIEW 中进行定制，
+同时可以使用LabVIEW Express VI 和LabVIEW Signal Express 的步骤对设备进行编程。\par
+    该实验目的在于了解虚拟仪器在物理实验中的应用，主要关心模拟信号输入输出、原型板各接口间如何连通、如何在原型板上以传统电路为原型连接电路。
+在该平台上进行实验与传统电学实验相比，能够更为轻松而简单地搭建服务于实验者目的的实验电路，同时获得的数据也更为精确，这就节省了人工读数、计数的时间与精力，也能一定在程度上避免传统电路元件的频繁损耗。
+    \subsection{虚拟仪器的软件}
+    本实验采用LabVIEW作为用于虚拟仪器系统设计的软件开发平台。LabVIEW将计算机数据分析和显示能力与仪器驱动程序整合在一起，为针对仪器的编程提供了许多便利。同时，与其他常见的计算机高级语言相比，LabVIEW的编程操作采用可视化进行，实验者即便没有相关的编程基础，也能在很短时间内上手掌握LabVIEW的基本操作。
+	用LabVIEW进行编程的集成开发环境简称VI，包括三个部分：前面板、程序框图和图标/连线板。
+	
+	其中，前面板用于设置输入数值与显示输出量，相当于真实仪表的前面板，相当于计算机软件中的GUI界面，或是真实仪表的前面板。前面板上的图标分为输入类（Controls）和显示类（Indicators），具体而言可以是开关、旋钮、图形、图表等表现形式。
+	
+	程序框图则相当于仪器的内部功能结构，这类似于计算机软件中的后台进程。程序框图中的端口用于和前面板的输入对象和显示对象传递数据，节点用于实现函数与功能子程序调用，图框用于实现结构化程序控制命令，连线则代表程序执行过程中的数据流。
+	
+	如ELVIS II$ ^+ $一样，LabVIEW的功能丰富而强大，而本次实验中仅聚焦于为实现实验目的的一部分即可。
+
+    \subsection{利用虚拟仪器测量伏安特性曲线}
+    \begin{figure}[!h]
+		\centering
+		\begin{circuitikz}
+			\draw (0,-1) node[ground]{}
+			to[short] (0,3)
+			to[short,l=ELVIS输出端供电] (6,3)
+			to[short] (6,1);
+			\draw (0,1)
+			to[short,*-] (0.5,1)
+			to[european resistor,l=标准电阻] (3,1)
+			to[european resistor,l=待测电阻] (5.5,1)
+			to[short] (6,1);
+			\draw (0.5,1)
+			to[short,*-] (0.5,2)
+			to[short,l=测总电压] (5.5,2)
+			to[short,-*] (5.5,1);
+			\draw (0.5,1)
+			to[short] (0.5,0)
+			to[short,l_=测电压算电流] (3,0)
+			to[short,-*] (3,1);
+		\end{circuitikz}
+		\caption{利用虚拟仪器测量伏安特性原理图}
+	\end{figure}
+    在本实验中，一个模拟输出通道用于为整个测量电路供电，同时使用两个模拟输入通道分别测量总电压和标准电阻上的电压。
+    通过测量得到的电压值和已知的标准电阻值，我们可以计算出电路中的电流和待测电阻上的电压。
+    在程序的控制下，电路的电压从0 V开始逐步增加到设定的电压值。
+    每次电压变化后，便测得一组电压和电流值，最终得到一个数组。经过线性拟合，我们可以计算出待测电阻的阻值。
+    当使用单端输入方式时，各输入通道共用地线，测量的都是对地的电压，因此在连接电路时需要特别注意。
+    也可以使用差分输入方式。
+
+\section{实验内容}
+    \subsection{初步熟悉LabVIEW开发环境的基本操作和编程方法}
+    启动LabVIEW 2014后，通过多种方式之一可以创建一个新的VI项目，这样就会得到新项目的前面板和程序框图。
+    通过在这两个窗口之间进行切换和探索，我们可以轻松了解如何快速切换到另一个窗口、如何添加和调整不同的控件，以及控件调整时两个窗口之间的同步变化。
+    同时，我们可以看到丰富的右键快捷菜单，并学习标签工具、定位工具、连线工具以及各种快捷键的使用。
+    \subsection{创建一个模拟温度测量程序}
+    假设传感器的输出电压与温度成正比，那么我们可以利用计算机程序根据电压值计算出温度值。
+    同时，我们希望程序中能够通过开关在摄氏度和华氏度之间切换。
+    为简化实验，使用一个输入控件来代替数据采集卡来获取传感器的测量结果。
+    将电压值乘以100即可得到华氏温度值，如需显示摄氏温度值，则再将其转换为摄氏温度。
+    \subsubsection{创建前面板}
+    \begin{enumerate}
+        \item \textbf{打开前面板窗口}，在空白处点击右键，弹出控件选板。
+        
+        \item \textbf{选择控件并放置在前面板上}：
+        \begin{enumerate}
+            \item \textbf{温度计}：进入控件$\rightarrow$数值$\rightarrow$温度计。
+            \item \textbf{垂直滑动杆开关}：进入控件$\rightarrow$布尔$\rightarrow$垂直滑动杆开关。使用标签工具将名称改为“温度值单位”。在垂直滑动杆开关上右键点击，选择快捷菜单中的显示项$\rightarrow$布尔文本，使开关的状态显示出来。使用标签工具，在开关“条件真”位置旁边输入自由标签“摄氏”，在“条件假”位置旁边输入自由标签“华氏”。
+            \item \textbf{数值显示控件}：进入控件$\rightarrow$数值$\rightarrow$数值显示控件，使用标签工具将名称改为“温度值”。
+            \item \textbf{数值输入控件}：进入控件$\rightarrow$数值$\rightarrow$数值输入控件，使用标签工具将名称改为“采集的电压”。这个控件用作采集的电压值输入。
+        \end{enumerate}
+    \end{enumerate}
+    \begin{figure}[!h]
+        \centering
+        \includegraphics*[scale=0.5]{模拟温度前面板.JPG}
+        \caption{模拟温度测量程序前面板}
+    \end{figure}
+    \subsubsection{创建程序框图}
+    按照以下步骤在程序框图中完成操作：
+
+\begin{enumerate}
+    \item \textbf{打开程序框图}，在函数选板中选择以下对象并放置在程序框图中：
+    \begin{itemize}
+        \item \textbf{乘法函数、减法函数、除法函数}：进入函数$\rightarrow$数值。
+        \item \textbf{选择函数}：进入函数$\rightarrow$比较。根据温标选择开关的值，输出华氏温度（当选择开关为假）或摄氏温度（选择开关为真）。此函数有两个数值型输入端$t$和$f$，以及一个布尔型输入端$s$；当$s$为真时，输出值为$t$，当$s$为假时，输出值为$f$。
+    \end{itemize}
+    
+    \item \textbf{排列和连接图标}：
+    \begin{itemize}
+        \item 将所需对象放入程序框图后，将图标移至合适的位置。
+        \item 使用连线工具连接图标。在需要的地方创建数值常量：使用连线工具右键单击希望连一个常量的对象连线端子，在快捷菜单中选择“创建$\rightarrow$常量”，即可创建一个与端口数据类型相匹配的常数。也可以先放置一个数值常量再进行连线。
+    \end{itemize}
+
+    \item \textbf{整理程序框图}：
+    \begin{itemize}
+        \item 完成程序创建后，整理图标位置和连线。在需要整理的连线上单击右键，并在快捷菜单中选择“整理连线”以优化布局。
+    \end{itemize}
+    
+\end{enumerate}
+\begin{figure}[!h]
+    \centering
+    \includegraphics*[scale=0.5]{模拟温度程序框图.JPG}
+    \caption{模拟温度测量程序程序框图}
+\end{figure}
+
+\subsubsection{运行程序}
+按照以下步骤操作：
+
+\begin{enumerate}
+    \item \textbf{选择前面板窗口}。
+    
+    \item \textbf{运行VI程序}：
+    \begin{itemize}
+        \item 点击前面板窗口上的\textbf{连续运行按钮}，使程序进入连续运行模式。
+    \end{itemize}
+    
+    \item \textbf{观察程序运行}：
+    \begin{itemize}
+        \item 改变温度值单位，通过前面板中的控件切换“摄氏”与“华氏”温度，观察程序的反应和输出变化。
+    \end{itemize}
+    
+    \item \textbf{停止程序}：
+    \begin{itemize}
+        \item 再次点击\textbf{连续运行按钮}以停止程序运行。
+    \end{itemize}
+
+    \item \textbf{保存文件}：
+    \begin{itemize}
+        \item 使用文件菜单的保存功能，或按下快捷键 \texttt{<Ctrl+S>}，将VI项目保存到计算机中。
+    \end{itemize}
+\end{enumerate}
+
+\begin{figure}[!h]
+    \centering
+    \begin{minipage}[b]{0.45\linewidth}
+        \centering
+        \includegraphics[scale=0.5]{模拟温度程序效果图.JPG}
+        \caption{模拟温度测量程序效果图}
+    \end{minipage}
+    \quad % 添加横向间距
+    \begin{minipage}[b]{0.45\linewidth}
+        \centering
+        \includegraphics[scale=0.5]{模拟温度程序效果图2.JPG}
+        \caption{模拟温度测量程序效果图2}
+    \end{minipage}
+\end{figure}
+
+\subsection{创建一个的电压输出和采集的程序}
+在此实验中，我们首次使用了原型板，并学习了如何简单地将其与计算机程序进行交互。
+通过计算机程序，我们可以指示原型板在模拟输出端输出指定电压大小。
+然后，通过连线使原型板的模拟输入端与输出端达到同样的电压，接着将模拟输入端获取的数据传递给计算机程序。
+此外，LabVIEW程序设计方面还加深了对While循环结构设计方式的理解。
+具体实验步骤为：
+
+\begin{enumerate}
+    \item \textbf{新建VI项目}：
+    \begin{itemize}
+        \item 在程序框图中创建虚拟通道，并将其类型设置为模拟输出电压。
+        \item 将“DAQmx开始任务”、“DAQmx写入”和“DAQmx清除任务”三个节点放入程序框图并进行连接。
+        \item 在“DAQmx写入”的输入端创建输入控件。
+        \item 创建一个While循环结构，使其每100 ms执行一次循环内部的部分，直到在前面板按下停止按钮。
+    \end{itemize}
+
+    \item \textbf{编写电压采集程序}：
+    \begin{itemize}
+        \item 在程序框图中创建虚拟输入电压通道。
+        \item 以类似方式构建任务链和While循环，不同之处在于此处使用“DAQmx读取”控件而不是“DAQmx写入”控件，并连接输出控件而非输入控件。
+        \item While循环中每100 ms执行的操作不是重新读取输出电压，而是重新输出采集电压数据。
+    \end{itemize}
+
+    \item \textbf{连接并设置设备}：
+    \begin{itemize}
+        \item 使用USB线连接PC与原型板。
+        \item 打开ELVIS电源和原型板电源，设置前面板上的输出通道为Dev3/ao0，输入通道为Dev3/ai0。
+        \item 在原型板上，将模拟输出的“AO 0”端与模拟输入的“AI 0+”端连接，将“AI 0-”端与接地端“AIGND”用导线连接。
+    \end{itemize}
+
+    \item \textbf{运行和观察程序}：
+    \begin{itemize}
+        \item 在前面板窗口运行VI程序，不断改变输出电压，观察测量电压是否与输出电压一致。
+        \item 也可以点击停止按钮观察程序运行情况。
+    \end{itemize}
+
+    \item \textbf{停止和保存程序}：
+    \begin{itemize}
+        \item 停止程序运行，保存VI项目，关闭程序。
+    \end{itemize}
+\end{enumerate}
+\begin{figure}[!h]
+    \centering
+    \begin{minipage}[b]{0.45\linewidth}
+        \centering
+        \includegraphics[scale=0.5]{采集电压前面板.JPG}
+        \caption{电压输出和采集程序前面板}
+    \end{minipage}
+    \quad % 添加横向间距
+    \begin{minipage}[b]{0.45\linewidth}
+        \centering
+        \includegraphics[scale=0.5]{采集电压程序框图.JPG}
+        \caption{电压输出和采集程序程序框图}
+    \end{minipage}
+\end{figure}
+
+\subsection{用虚拟仪器测量伏安特性}
+\subsubsection{创建前面板}
+按照以下步骤在前面板中进行设置：
+\begin{enumerate}
+    \item \textbf{添加 Express XY 图}：
+    \begin{itemize}
+        \item 在控件选板中选择\textbf{图形}，然后选择\textbf{Express XY 图}。
+        \item 将图放置在前面板上，并将名称修改为“电阻的伏安曲线图”。
+        \item 将纵坐标和横坐标分别改为“电流（A）”和“电压（V）”。
+        \item 在图的右上角曲线0处点击右键，选择“常用曲线”，并选择“点+线”模式。
+    \end{itemize}
+    
+    \item \textbf{添加数值型输入控件}：
+    \begin{itemize}
+        \item 放置四个数值型输入控件在前面板中。
+        \item 分别将名称改为“输出电压步长”、“测量数据点数”、“标准电阻”、“时间间隔”。
+        \item 在“时间间隔”控件上点击右键，选择“显示项$\rightarrow$单位标签”。输入“s”作为单位标签，这样时间间隔成为一个以秒为单位的量。
+    \end{itemize}
+
+    \item \textbf{添加数值型显示控件}：
+    \begin{itemize}
+        \item 放置一个数值型显示控件，用于显示电阻测量值。
+        \item 将其名称改为“待测电阻值”。
+    \end{itemize}
+
+    \item \textbf{添加二维数组显示控件}：
+    \begin{itemize}
+        \item 先放置一个数组控件（控件选板$\rightarrow$“数组、矩阵与簇”$\rightarrow$“数组”）在前面板上。
+        \item 创建一个数值型显示控件，并将其拖放到数组框内，将数组变为数值型。
+        \item 改变数组维数为二维：使用定位工具向下拖拽索引框以增加到两个索引值，或者在索引框上点击右键并选择“添加维度”。
+        \item 将数组的名称改为“数据”。
+    \end{itemize}
+
+    \item \textbf{添加开关按钮}：
+    \begin{itemize}
+        \item 在控件选板中选择\textbf{布尔}，然后选择\textbf{开关按钮}。放置该按钮在前面板上，用于控制程序进程。
+    \end{itemize}
+\end{enumerate}
+\begin{figure}[!h]
+    \centering
+    \includegraphics*[scale=0.5]{伏安特性前面板.JPG}
+    \caption{测量伏安特性曲线前面板}
+\end{figure}
+\subsubsection{创建程序框图}
+根据讲义中的实验步骤内容进行总结，得到如下步骤：
+
+\begin{enumerate}
+    \item \textbf{输出电压与测量}：
+    \begin{itemize}
+        \item 在程序框图中插入平铺式顺序结构，在右键菜单选择“在后面添加帧”添加至5帧。
+        \item 在第0帧用“DAQ助手”输出电压：选择生成信号$\rightarrow$模拟输出$\rightarrow$电压，把输出通道设为Dev3的“ao 0”，选择“1采样（按要求）”。
+    \end{itemize}
+
+    \item \textbf{等待电压稳定}：
+    \begin{itemize}
+        \item 在第1帧使用“等待（ms）”控件，并连接单位转换模块，将时间从秒转换为毫秒。
+    \end{itemize}
+
+    \item \textbf{采集与计算}：
+    \begin{itemize}
+        \item 第2帧用“DAQ助手”采集电压信号，选择采集信号$\rightarrow$模拟输入$\rightarrow$电压，通道设为“ai 0”和“ai 1”，模式为“1采样（按要求）”。
+        \item 插入“索引数组”和“减”、“除”节点，连接并计算待测电阻的电压和电流。
+    \end{itemize}
+
+    \item \textbf{过程中等待与结束}：
+    \begin{itemize}
+        \item 在第3帧加入“等待（ms）”控件，设定常量为100 ms。
+        \item 在第4帧用“DAQ助手”将电压输出为0。
+    \end{itemize}
+
+    \item \textbf{While循环控制}：
+    \begin{itemize}
+        \item 使用While循环包含顺序结构及其他元素。设置电压输出从0 V到5 V（可调节），连接循环变量和“输出电压步长”。
+    \end{itemize}
+
+    \item \textbf{数据处理和显示}：
+    \begin{itemize}
+        \item 通过移位寄存器在循环中存储电压和电流数据，并用“创建数组”更新数据。
+        \item 把数据连接到“数据”数组显示控件和“伏安曲线图”。
+    \end{itemize}
+
+    \item \textbf{电阻值计算}：
+    \begin{itemize}
+        \item 循环外添加“线性拟合”，连接电流和电压数组，输出结果到“待测电阻值”。
+    \end{itemize}
+    
+\end{enumerate}
+最后，在前面板与程序框图中整理图标位置和连线，并保存程序。
+\begin{figure}[!h]
+    \centering
+    \includegraphics*[scale=0.3]{伏安特性曲线程序框图.JPG}
+    \caption{测量伏安特性曲线程序框图}
+\end{figure}
+\newpage
+
+\subsubsection{正确连接外部电路}
+在ELVIS自带的原型板上连接电路。电压的模拟输出和模拟采集在原型板的左侧。实验时连接电路如下图所示：
+\begin{figure}[!h]
+    \centering
+    \includegraphics*[scale=0.1]{实验电路.jpg}
+    \caption{测量伏安特性曲线实验电路}
+\end{figure}
+\subsubsection{运行程序}
+再次检查前面板窗口中各参量设置情况，运行程序。分别测量两个待测电阻的电阻值。分析实验结果。
+\subsubsection{利用前面的程序测量并绘制稳压二极管伏安特性曲线}
+改变“输
+出电压步长”为负值时，可以在电阻两端加反向电压。实验所用的稳压二极管正向和反向允许通
+过的最大电流都约为 $10 mA$，其反向稳定电压大概为$0.7 V$。
+\begin{figure}[!h]
+    \centering
+    \includegraphics*[scale=0.3]{二极管正向.JPG}
+    \caption{测量稳压二极管正向伏安特性曲线}
+\end{figure}
+\begin{figure}[!h]
+    \centering
+    \includegraphics*[scale=0.3]{二极管反向.JPG}
+    \caption{测量稳压二极管反向伏安特性曲线}
+\end{figure}
+
+\section{实验数据及处理}
+    \subsection{线性元件($ 10\,\mathrm k\Omega $，$ 100\,\Omega $电阻)的伏安特性曲线}
+    \subsubsection{$ 10\,\mathrm k\Omega $电阻的测量结果}
+    \begin{table}[htbp]
+        \centering
+        \begin{tabular}{|c|c|}
+        \hline
+        电压 (V) & 电流 (A) \\ \hline
+        -0.00160994 & -4.82E-06 \\ \hline
+        0.0982064  & 4.84E-06  \\ \hline
+        0.196413   & 1.77E-05  \\ \hline
+        0.295907   & 2.42E-05  \\ \hline
+        0.395402   & 3.06E-05  \\ \hline
+        0.49393    & 4.35E-05  \\ \hline
+        0.592137   & 5.96E-05  \\ \hline
+        0.691309   & 6.92E-05  \\ \hline
+        0.79016    & 7.57E-05  \\ \hline
+        0.889977   & 7.89E-05  \\ \hline
+        0.988183   & 9.82E-05  \\ \hline
+        1.08897    & 9.82E-05  \\ \hline
+        1.18685    & 0.000114314 \\ \hline
+        1.28635    & 0.000123974 \\ \hline
+        1.38488    & 0.000130413 \\ \hline
+        1.48405    & 0.000146513 \\ \hline
+        \end{tabular}
+        \caption{$10k\Omega$电阻的伏安特性实验数据表}
+        \end{table}
+        采用scipy.stats中的linregress函数对数据进行线性拟合，得到如下图表：
+        \begin{figure}[!h]
+            \centering
+            \includegraphics*[scale=0.5]{10kΩ.png}
+            \caption{$10k\Omega$电阻的伏安特性曲线}
+        \end{figure}
+        \newpage
+        拟合出的电阻测量值约为$9.94k\Omega$,误差约为$0.6\%$，于标称值$10k\Omega$较为相符。
+        \subsubsection{$ 100\Omega $电阻的测量结果}
+        \begin{table}[htbp]
+            \centering
+            \begin{tabular}{|c|c|}
+            \hline
+            电压 (V)    & 电流 (A)    \\ \hline
+            -0.000965964 & -1.13E-05   \\ \hline
+            0.0489422   & 0.00049104   \\ \hline
+            0.0988504   & 0.000990122  \\ \hline
+            0.148115    & 0.0014892    \\ \hline
+            0.197379    & 0.00198829   \\ \hline
+            0.246965    & 0.00249381   \\ \hline
+            0.29623     & 0.00298645   \\ \hline
+            0.346782    & 0.00348553   \\ \hline
+            0.395402    & 0.00399427   \\ \hline
+            0.446277    & 0.0044837    \\ \hline
+            0.494897    & 0.00498922   \\ \hline
+            0.545128    & 0.00548186   \\ \hline
+            0.594392    & 0.00598094   \\ \hline
+            0.644301    & 0.00648325   \\ \hline
+            0.693888    & 0.00698233   \\ \hline
+            \end{tabular}
+            \caption{$100\Omega$电阻的伏安特性实验数据表}
+            \end{table}
+            同样的，采用scipy.stats中的linregress函数对数据进行线性拟合，得到如下图表：
+            \begin{figure}[!h]
+                \centering
+                \includegraphics*[scale=0.5]{100Ω.png}
+                \caption{$100\Omega$电阻的伏安特性曲线}
+            \end{figure}
+            \newpage
+            拟合出的电阻测量值约为$101\Omega$,误差约为$1\%$，于标称值$100\Omega$较为相符。
+    \subsection{发光二极管的伏安特性曲线}   
+    \begin{table}[htbp]
+        \centering
+        \begin{tabular}{|c|c|}
+        \hline
+        电压 (V)    & 电流 (A)    \\ \hline
+        0.95856    & -1.60E-06    \\ \hline
+        1.07931    & -8.04E-06    \\ \hline
+        1.19844    & -4.82E-06    \\ \hline
+        1.31919    & -4.82E-06    \\ \hline
+        1.438      & 1.62E-06     \\ \hline
+        1.55746    & 4.84E-06     \\ \hline
+        1.67467    & 3.70E-05     \\ \hline
+        1.76321    & 0.000352585  \\ \hline
+        1.8099     & 0.00107062   \\ \hline
+        1.84275    & 0.00194321   \\ \hline
+        1.86722    & 0.00288985   \\ \hline
+        1.88751    & 0.00387836   \\ \hline
+        1.90683    & 0.0048733    \\ \hline
+        1.92196    & 0.00590367   \\ \hline
+        1.93871    & 0.00693725   \\ \hline
+        1.95288    & 0.00798372   \\ \hline
+        1.96705    & 0.0090334    \\ \hline
+        1.97961    & 0.0100927    \\ \hline
+        \end{tabular}
+        \caption{发光二极管的正向伏安特性实验数据表}
+        \end{table}
+        \newpage
+        \begin{table}[htbp]
+            \centering
+            \begin{tabular}{|c|c|}
+            \hline
+            电压 (V)    & 电流 (A)    \\ \hline
+            -0.00225392  & 1.62E-06     \\ \hline
+            -0.118492    & 1.62E-06     \\ \hline
+            -0.238271    & -1.60E-06    \\ \hline
+            -0.359017    & -8.04E-06    \\ \hline
+            -0.479119    & -4.82E-06    \\ \hline
+            -0.598577    & -4.82E-06    \\ \hline
+            -0.718034    & -1.60E-06    \\ \hline
+            -0.83878     & -4.82E-06    \\ \hline
+            -0.95856     & -1.60E-06    \\ \hline
+            -1.07963     & -8.04E-06    \\ \hline
+            -1.19876     & -4.82E-06    \\ \hline
+            -1.31919     & -4.82E-06    \\ \hline
+            -1.43833     & -1.60E-06    \\ \hline
+            -1.55875     & -1.60E-06    \\ \hline
+            -1.67885     & -8.04E-06    \\ \hline
+            -1.79928     & -4.82E-06    \\ \hline
+            -1.91841     & -1.60E-06    \\ \hline
+            -2.03916     & -4.82E-06    \\ \hline
+            -2.15894     & -8.04E-06    \\ \hline
+            -2.27872     & 1.62E-06     \\ \hline
+            -2.3985      & -1.60E-06    \\ \hline
+            -2.51861     & -4.82E-06    \\ \hline
+            -2.63871     & -4.82E-06    \\ \hline
+            -2.75817     & -1.60E-06    \\ \hline
+            -2.87892     & -4.82E-06    \\ \hline
+            -2.99838     & -1.60E-06    \\ \hline
+            \end{tabular}
+            \caption{发光二极管的反向伏安特性实验数据表}
+            \end{table}
+            对实验数据点进行拟合，得到如下图表：
+            \begin{figure}[!h]
+                \centering
+                \includegraphics*[scale=0.5]{发光二极管.png}
+                \caption{$100\Omega$电阻的伏安特性曲线}
+            \end{figure}
+            观察得到的曲线图可知，发光二极管并不是线性元件。其在第四象限的曲线几乎和X轴负半轴重合，
+            说明在反向电压下，发光二极管的电流非常小，几乎为零，此时发光二极管的电阻很大。在正向电压下，电流随电压增大而增大，但并不是线性关系。
+            当电压接近$1.7V$时，电流随电压增大而急剧增大，说明发光二极管的电阻在这个电压附近急剧减小。
+\section{实验总结与思考}
+    \subsubsection{讲义思考题}
+    1.虚拟仪器系统与传统仪器有什么区别？请简要说明。 \\
+    \textit{答：与传统仪器相比，基于LabVIEW的虚拟仪器系统在多个方面展现出显著优势。首先，传统仪器主要依赖专门的硬件，其功能固定，扩展性差；而虚拟仪器利用LabVIEW软件及通用的数据采集硬件，通过编程即可实现各种测量和控制功能，具备极大的灵活性。其次，传统仪器往往需要为不同功能配备独立设备，成本较高且维护复杂；而虚拟仪器通过软件配置，可以在同一硬件上实现多种功能，降低了设备成本并提高了资源利用率。此外，传统仪器的人机交互界面通常为固定设计，功能有限；而LabVIEW的虚拟仪器界面可完全自定义，提供了更强的交互性能和用户体验。
+    在数据处理方面，传统仪器一般只关注硬件层面的测量功能，数据处理能力有限，而虚拟仪器依托计算机的强大运算资源，不仅能够采集数据，还支持实时的数据处理、分析与存储。最后，虚拟仪器系统通常体积较小，便于携带，易于集成，可以通过软件集成多种功能，避免了传统仪器功能单一、占用空间大等问题。因此，基于LabVIEW的虚拟仪器系统在灵活性、扩展性、成本效益以及数据处理能力上均具有明显优势，适合多样化的测控需求。}  \\
+    2. 本实验内容3中的电压输出和采集哪个先执行？  \\
+    \textit{答：应当是电压输出先执行，否则若电压采集先执行，电压输出的信号在起始时刻并不稳定，很可能会干扰到电压采集的信号，使得读数不准。} \\
+    \subsubsection{实验感想}
+    得益于实验前得到预习与指导教师得到细心指导，总体来说这次实验进行的较为顺利，并未遇到太大障碍。LabVIEW的图形化编程具有很高的用户友好性，
+    即便此前没有接触过该软件，也能凭借讲义的指导在短时间内快速完成上手。同时，先前阶段的预科实验帮助我很好的熟悉了面包板的连线操作，因此在面对ELVIS II$ ^+ $的仪器时也并未感到陌生，能够较快的掌握连线方式。
+    通过这次实验，我极大的提高了对虚拟仪器的认识，了解了虚拟仪器的优势和应用场景。虚拟仪器通过引入计算机图形化编程，极大的简化了实验设备的搭建过程，并为实验的设计提了诸多便利，具有巨大的潜能。同时，我对LabVIEW的图形化编程有了更深入的了解。通过实验数据的处理，我也更加熟悉了Python的数据处理库，对数据的拟合和可视化有了更深入的认识。
+\end{document}
